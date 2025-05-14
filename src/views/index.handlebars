@@ -1,0 +1,13 @@
+<h1>Products List</h1>
+<section>
+    {{#each products}}
+    <div class="card" style="width: 18rem;">
+        <img src={{this.image}} class="card-img-top" alt={{this._id}}>
+        <div class="card-body">
+            <h5 class="card-title">{{this.title}}</h5>
+            <p class="card-text">{{this.price}}</p>
+            <a href="/details/{{this._id}}" class="btn btn-primary">More Details</a>
+        </div>
+    </div>
+    {{#each}}
+</section>
