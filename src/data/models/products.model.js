@@ -10,7 +10,7 @@ const schema = new Schema(
         code: {type: String, require: true},
         price: {type: Number, require: true},
         status: {type: Boolean, require: true},
-        stock: {type: Number, require: true},
+        stock: {type: Number, require: true, default: 0},
         category: {type: String, require: true},
         image: {type: String, require: true}
     }, 
