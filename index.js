@@ -8,6 +8,7 @@ import errorHandler from "./src/middlewares/errorHandler.mid.js";
 import indexRouter from "./src/routers/index.router.js";
 import dbConnect from "./src/helpers/dbConnect.helper.js";
 import cookieParser from "cookie-parser";
+import session from "express-session";
 
 /* Server Settings*/
 
@@ -34,6 +35,12 @@ SERVER.use(EXPRESS.urlencoded( { extended: true } ));
 SERVER.use(EXPRESS.static("public"));
 SERVER.use(morgan("dev"));
 
+/* ESTO DESPUES SE VA A BORRAR */
+//Sessions setting
+//SERVER.use()
+/* HASTA ACA SE BORRA */
+
+
 
 /* Router Settings */
 
@@ -47,5 +54,7 @@ SERVER.use(pathHandler);
 
 /* Video 02 -- Empieza en 19:52 */
 //Continuar viendo en 43:50
+
+/* Video 03 -- Empieza en 18:56 */
 
 /* Video 05 -- Empieza en 18:30 */
