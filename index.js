@@ -52,9 +52,11 @@ SERVER.use(pathHandler);
 
 /* Video 01 -- Empieza en FALTA VER CUANDO EMPIEZA */
 
-/* Video 02 -- Empieza en 19:52 */
-//Continuar viendo en 43:50
+/* Video 02 -- Empieza en 19:52 */ //Falta lo del navbar que esta al final
 
-/* Video 03 -- Empieza en 18:56 */
+
+/* Video 03 -- Empieza en 18:56 */ //OK!!!!
+
+/* Video 04 - Empieza en 16:48 */
 
 /* Video 05 -- Empieza en 18:30 */

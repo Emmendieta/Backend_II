@@ -5,9 +5,13 @@
         <img src={{this.image}} class="card-img-top" alt={{this._id}}>
         <div class="card-body">
             <h5 class="card-title">{{this.title}}</h5>
-            <p class="card-text">{{this.price}}</p>
+            <h4>Category: {{this.category}}</h4>
+            <h3 class="card-text">$ {{this.price}}</h3>
+            <h2>Code: {{this.code}}</h2>
+            <h2>stock: {{this.stock}}</h2>
+            <p>{{this.description}}</p>
             <a href="/details/{{this._id}}" class="btn btn-primary">More Details</a>
         </div>
     </div>
-    {{#each}}
+    {{/each}}
 </section>
