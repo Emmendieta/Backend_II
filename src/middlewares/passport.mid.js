@@ -87,14 +87,16 @@ passport.use(
 );
 
 passport.use(
-    "admin",
+    "user",
     new PassportStrategy(
-        {jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.token]), secretOrKey: process.env.SECRET},
+        {jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.token]),
+            secretOrKey: process.env.SECRET,
+        },
         async (data, done) => {
             try {
                 const { user_id, email, role } = data;
                 const user = await usersManager.readByFilter({ _id: user_id, email, role });
-                if (!user || user.role != "ADMIN") {
+                if(!user) {
                     const error = new Error("Forbidden!!!");
                     error.statusCode = 403;
                     throw error;
@@ -105,6 +107,27 @@ passport.use(
             }
         }
     )
-)
+);
+
+passport.use(
+    "admin",
+    new PassportStrategy(
+        {jwtFromRequest: ExtractJwt.fromExtractors([(req) => req?.cookies?.token]), secretOrKey: process.env.SECRET},
+        async (data, done) => {
+            try {
+                const { user_id, email, role } = data;
+                const user = await usersManager.readByFilter({ _id: user_id, email, role });
+                if (!user || user.role !== "ADMIN") {
+                    const error = new Error("Forbidden!!!");
+                    error.statusCode = 403;
+                    throw error;
+                }
+                done(null, user);
+            } catch (error) {
+                done(error);
+            }
+        }
+    )
+);
 
 export default passport;

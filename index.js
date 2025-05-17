@@ -54,9 +54,8 @@ SERVER.use(pathHandler);
 
 /* Video 02 -- Empieza en 19:52 */ //Falta lo del navbar que esta al final
 
-
 /* Video 03 -- Empieza en 18:56 */ //OK!!!!
 
-/* Video 04 - Empieza en 16:48 */
+/* Video 04 - Empieza en 16:48 */  //FALTA EL NAVBAR pero despues de hacerlo continuar en 45:29
 
 /* Video 05 -- Empieza en 18:30 */

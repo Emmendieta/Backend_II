@@ -82,13 +82,13 @@ const destroyById = async (req, res, next) => {
 
 const forbiddenOpts = { session: false, failureRedirect: "api/aut/forbidden" };
 
-//productsRouter.post("/", passport.authenticate("admin", forbiddenOpts), createOne);
-productsRouter.post("/", createOne);
+productsRouter.post("/", passport.authenticate("admin", forbiddenOpts), createOne);
+//productsRouter.post("/", createOne);
 productsRouter.get("/", readAll);
 productsRouter.get("/:pid", readById);
-//productsRouter.put("/:pid", passport.authenticate("admin", forbiddenOpts), updateById);
-productsRouter.put("/:id", updateById);
-//productsRouter.delete("/:pid", passport.authenticate("admin", forbiddenOpts), destroyById);
+productsRouter.put("/:pid", passport.authenticate("admin", forbiddenOpts), updateById);
+//productsRouter.put("/:id", updateById);
+productsRouter.delete("/:pid", passport.authenticate("admin", forbiddenOpts), destroyById);
 productsRouter.delete("/:id", destroyById);
 
 export default productsRouter;

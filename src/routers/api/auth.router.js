@@ -64,11 +64,11 @@ const loginCB = async (req, res, next) => {
         //req.session.email = user.email;
         //req.session.role = user.role;
 
-        return res.status(200).json( {message: "Logged in successful!", response: user._id, method, url });
+        //return res.status(200).json( {message: "Logged in successful!", response: user._id, method, url });
 
         /* FIN DE LA PARTE DEL VIDEO 2 */
-
-        //return res.status(200).cookie("token", req.user.token, { maxAge: 24*60*60*1000}).json( {message: "Logged in successful!", response: _id, method, url });
+        const { _id } = req.user;
+        return res.status(200).cookie("token", req.user.token, { maxAge: 24*60*60*1000}).json( {message: "Logged in successful!", response: _id, method, url });
     } catch (error) {
         next(error);
     }
@@ -79,17 +79,17 @@ const signOutCB = async (req, res, next) => {
         const { method, originalUrl: url } = req;
 
                 /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
-        console.log(req.session);
+/*         console.log(req.session);
         req.session.destroy();
-        console.log(req.session);
+        console.log(req.session); */
 
-        return res.status(200).json( {message: "Sign Out successful!", method, url });
+        //return res.status(200).json( {message: "Sign Out successful!", method, url });
 
         /* FIN DE LA PARTE DEL VIDEO 2 */
 
 
 
-        //return res.status(200).clearCookie("token").json({ message: "Sign out successful!", method, url });
+        return res.status(200).clearCookie("token").json({ message: "Sign out successful!", method, url });
     } catch (error) {
         next(error);
     }
@@ -115,15 +115,46 @@ const forbiddenCB = (req, res, next) => {
     }
 };
 
-const badOpts = { session: false, failureRedirect: "api/auth/bad-auth" };
-const forbiddenOpts = { session: false, failureRedirect: "api/aut/forbidden"}
+const currentCB = async (req, res, next) =>  {
+    try{
+        const { method, originalUrl: url} = req;
 
-authRouter.post("/register", registerCB);
-//authRouter.post("/register", passport.authenticate("register", badOpts) ,registerCB);
-authRouter.post("/login", loginCB);
-//authRouter.post("/login", passport.authenticate("login", badOpts) ,loginCB);
-authRouter.post("/signout", signOutCB);
+        /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
+/*         const { email } = req.body;
+        if(!email) {
+            const error = new Error("Invalid Credentials!");
+            error.statusCode = 400;
+            throw error;
+        };
+        const user = await usersManager.readByFilter({ email });
+        if (!user) {
+            const error = new Error("Invalid Credentials!");
+            error.statusCode = 401;
+            throw error;
+        }; */
+        //req.session.user_id = user._id;
+        //req.session.email = user.email;
+        //req.session.role = user.role;
+
+        return res.status(200).json( {message: "User is Online!", response: true, method, url });
+    } catch(error) {
+        next(error);
+    }
+}
+
+const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
+const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"}
+
+//authRouter.post("/register", registerCB);
+authRouter.post("/register", passport.authenticate("register", badOpts) ,registerCB);
+//authRouter.post("/login", loginCB);
+authRouter.post("/login", passport.authenticate("login", badOpts) ,loginCB);
+//La linea de abajo se tiene que mejorar:
+//authRouter.post("/signout", signOutCB);
+authRouter.post("/signout", passport.authenticate("user", forbiddenOpts), signOutCB);
+//Esta linea de abajo esta mal:
 //authRouter.post("/signout", passport.authenticate("current", forbiddenOpts), signOutCB);
+authRouter.post("/current", passport.authenticate("current", forbiddenOpts), currentCB);
 authRouter.get("/bad-auth", badAuthCB);
 authRouter.get("/forbidden", forbiddenCB);  
 
