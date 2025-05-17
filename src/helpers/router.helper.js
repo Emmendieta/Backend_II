@@ -6,12 +6,20 @@ class RouterHelper {
     }
     getRouter = () => this.router;
     
-    //Función que aplica todas las lógicas que se repiten:
+    //Función que aplica todas las lógicas que se repiten pero para API:
     applyMiddlewares = (middelwares) => middelwares.map((mid) => async(req, res, next) => {
         try {
             await mid(req, res, next);
         } catch (error) {
             next(error);
+        }
+    });
+
+    applyMiddelwaresRender = (middelwaresRender) => middelwaresRender.map(midRend => async(req, res, next) => {
+        try {
+            await midRend(req, res, next);
+        } catch (error) {
+            res.status(error.statusCode || 500).render("error", { error });
         }
     });
     
@@ -27,8 +35,8 @@ class RouterHelper {
 
     //Use:
     use = (path, ...middelwares) => this.router.use(path, this.applyMiddlewares(middelwares));
+    //Render:
+    render = (path, ...middelwaresRender) => this.router.get(path, this.applyMiddelwaresRender(middelwaresRender));
 }
 
 export default RouterHelper;
-
-/* Video 05 - 28:22) ESTO SE APLICA A TODOS LOS ROUTERS y VER SI A ALGO MAS */

@@ -3,145 +3,119 @@ import { response, Router } from "express";
 import { usersManager } from "../../data/managers/mongo/manager.mongo.js";
 import { compareHash, createHash } from "../../helpers/hash.helper.js";
 import passportCB from "../../middlewares/passportCB.mid.js";
+import RouterHelper from "../../helpers/router.helper.js";
 
+const registerCB = async (req, res) => {
+    const { method, originalUrl: url } = req;
+    //const { _id } = req.user;
 
-const authRouter = Router();
+    /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
 
-const registerCB = async (req, res, next) => {
-    try {
-        const { method, originalUrl: url} = req;
-        //const { _id } = req.user;
-
-        /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
-
-        if(!req.body.email || !req.body.password || !req.body.age) {
-            const error = new Error("Invalid data!");
-            error.statusCode = 400;
-            throw error;
-        };
-        const { email } = req.body;
-        const user = await usersManager.readByFilter({ email });
-        if (user) {
-            const error = new Error("User already exists!");
-            error.statusCode = 401;
-            throw error;
-        };
-        req.body.password = createHash(req.body.password);
-        const newUser = await usersManager.createOne(req.body);
-
-
-        /* FIN DE LA PARTE DEL VIDEO 2 */
-
-        return res.status(201).json( {message: "Registered!", response: newUser, method, url });
-    } catch (error) {
-        next(error);
-    }
-};
-
-const loginCB = async (req, res, next) => {
-    try {
-        const { method, originalUrl: url} = req;
-
-        /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
-/*         const { email, password } = req.body;
-        if(!email || !password) {
-            const error = new Error("Invalid Credentials!");
-            error.statusCode = 400;
-            throw error;
-        };
-        const user = await usersManager.readByFilter({ email });
-        if (!user) {
-            const error = new Error("Invalid Credentials!");
-            error.statusCode = 401;
-            throw error;
-        };
-        const verifyPassword = compareHash(password, user.password);
-        if (!verifyPassword) {
-            const error = new Error("Invalid Credentials!");
-            error.statusCode = 401;
-            throw error;
-        } */
-        //req.session.user_id = user._id;
-        //req.session.email = user.email;
-        //req.session.role = user.role;
-
-        //return res.status(200).json( {message: "Logged in successful!", response: user._id, method, url });
-
-        /* FIN DE LA PARTE DEL VIDEO 2 */
-        const { _id } = req.user;
-        const opts = { maxAge: 24 * 60 * 60 * 1000 };
-        return res.status(200).cookie("token", req.user.token, opts).json( {message: "Logged in successful!", response: _id, method, url });
-    } catch (error) {
-        next(error);
-    }
-};
-
-const signOutCB = async (req, res, next) => {
-    try {
-        const { method, originalUrl: url } = req;
-
-                /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
-/*         console.log(req.session);
-        req.session.destroy();
-        console.log(req.session); */
-
-        //return res.status(200).json( {message: "Sign Out successful!", method, url });
-
-        /* FIN DE LA PARTE DEL VIDEO 2 */
-
-
-
-        return res.status(200).clearCookie("token").json({ message: "Sign out successful!", method, url });
-    } catch (error) {
-        next(error);
-    }
-}
-
-const badAuthCB = (req, res, next) => {
-    try {
-        const error = new Error("Bad auth!");
+    if (!req.body.email || !req.body.password || !req.body.age) {
+        const error = new Error("Invalid data!");
+        error.statusCode = 400;
+        throw error;
+    };
+    const { email } = req.body;
+    const user = await usersManager.readByFilter({ email });
+    if (user) {
+        const error = new Error("User already exists!");
         error.statusCode = 401;
         throw error;
-    } catch (error) {
-        next(error);
-    }
+    };
+    req.body.password = createHash(req.body.password);
+    const newUser = await usersManager.createOne(req.body);
+
+
+    /* FIN DE LA PARTE DEL VIDEO 2 */
+
+    return res.status(201).json({ message: "Registered!", response: newUser, method, url });
 };
 
-const forbiddenCB = (req, res, next) => {
-    try {
-        const error = new Error("Forbidden!");
-        error.statusCode = 403;
-        throw error;
-    } catch (error) {
-        next(error);
-    }
+const loginCB = async (req, res) => {
+    const { method, originalUrl: url } = req;
+
+    /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
+    /*         const { email, password } = req.body;
+            if(!email || !password) {
+                const error = new Error("Invalid Credentials!");
+                error.statusCode = 400;
+                throw error;
+            };
+            const user = await usersManager.readByFilter({ email });
+            if (!user) {
+                const error = new Error("Invalid Credentials!");
+                error.statusCode = 401;
+                throw error;
+            };
+            const verifyPassword = compareHash(password, user.password);
+            if (!verifyPassword) {
+                const error = new Error("Invalid Credentials!");
+                error.statusCode = 401;
+                throw error;
+            } */
+    //req.session.user_id = user._id;
+    //req.session.email = user.email;
+    //req.session.role = user.role;
+
+    //return res.status(200).json( {message: "Logged in successful!", response: user._id, method, url });
+
+    /* FIN DE LA PARTE DEL VIDEO 2 */
+    const { _id } = req.user;
+    const opts = { maxAge: 24 * 60 * 60 * 1000 };
+    return res.status(200).cookie("token", req.user.token, opts).json({ message: "Logged in successful!", response: _id, method, url });
 };
 
-const currentCB = async (req, res, next) =>  {
-    try{
-        const { method, originalUrl: url} = req;
+const signOutCB = async (req, res) => {
+    const { method, originalUrl: url } = req;
 
-        /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
-/*         const { email } = req.body;
-        if(!email) {
-            const error = new Error("Invalid Credentials!");
-            error.statusCode = 400;
-            throw error;
-        };
-        const user = await usersManager.readByFilter({ email });
-        if (!user) {
-            const error = new Error("Invalid Credentials!");
-            error.statusCode = 401;
-            throw error;
-        }; */
-        //req.session.user_id = user._id;
-        //req.session.email = user.email;
-        //req.session.role = user.role;
+    /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
+    /*         console.log(req.session);
+            req.session.destroy();
+            console.log(req.session); */
 
-        return res.status(200).json( {message: "User is Online!", response: true, method, url });
-    } catch(error) {
-        next(error);
-    }
+    //return res.status(200).json( {message: "Sign Out successful!", method, url });
+
+    /* FIN DE LA PARTE DEL VIDEO 2 */
+
+
+
+    return res.status(200).clearCookie("token").json({ message: "Sign out successful!", method, url });
+}
+
+const badAuthCB = (req, res) => {
+    const error = new Error("Bad auth!");
+    error.statusCode = 401;
+    throw error;
+};
+
+const forbiddenCB = (req, res) => {
+    const error = new Error("Forbidden!");
+    error.statusCode = 403;
+    throw error;
+};
+
+const currentCB = async (req, res) => {
+    const { method, originalUrl: url } = req;
+
+    /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
+    /*         const { email } = req.body;
+            if(!email) {
+                const error = new Error("Invalid Credentials!");
+                error.statusCode = 400;
+                throw error;
+            };
+            const user = await usersManager.readByFilter({ email });
+            if (!user) {
+                const error = new Error("Invalid Credentials!");
+                error.statusCode = 401;
+                throw error;
+            }; */
+    //req.session.user_id = user._id;
+    //req.session.email = user.email;
+    //req.session.role = user.role;
+
+    return res.status(200).json({ message: "User is Online!", response: true, method, url });
 };
 
 /* const googleCB = (req, res, next) => {
@@ -155,30 +129,25 @@ const currentCB = async (req, res, next) =>  {
 /* const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
 const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"} */
 
-//authRouter.post("/register", registerCB);
-//authRouter.post("/register", passport.authenticate("register", badOpts) ,registerCB);
-authRouter.post("/register", passportCB("register") ,registerCB);
-//authRouter.post("/login", loginCB);
-authRouter.post("/login", passportCB("login") ,loginCB);
-//authRouter.post("/login", passport.authenticate("login", badOpts) ,loginCB);
-//La linea de abajo se tiene que mejorar:
-//authRouter.post("/signout", signOutCB);
-authRouter.post("/signout", passportCB("user"), signOutCB);
-//authRouter.post("/signout", passport.authenticate("user", forbiddenOpts), signOutCB);
-//Esta linea de abajo esta mal:
-//authRouter.post("/signout", passport.authenticate("current", forbiddenOpts), signOutCB);
-//authRouter.post("/current", passport.authenticate("current", forbiddenOpts), currentCB);
-authRouter.post("/current", passportCB("current"), currentCB);
+class AuthRouter extends RouterHelper {
+    constructor() {
+        super();
+        this.init();
+    }
+    init = () => {
+        this.create("/register", passportCB("register"), registerCB);
+        this.create("/login", passportCB("login"), loginCB);
+        this.create("/signout", passportCB("user"), signOutCB);
+        this.create("/current", passportCB("current"), currentCB);
+        this.read("/bad-auth", badAuthCB);
+        this.read("/forbidden", forbiddenCB);
+        /*Google*/
+        //ESTA LINEA DE ABAJO TIENE QUE SER CON UN POST Y UN BOTON EN REALIDAD:
+        this.read("/google", passportCB("google", { scope: ["email", "profile"] }));
+        this.read("/google/redirect", passportCB("google"), loginCB);
+    };
+};
 
-authRouter.get("/bad-auth", badAuthCB);
-authRouter.get("/forbidden", forbiddenCB); 
-/*Google*/
-//ESTE TIENE QUE SER CON UN POST Y UN BOTON EN REALIDAD:
-authRouter.get("/google", passportCB("google", { scope: ["email", "profile"] }));
-//authRouter.get("/google", passport.authenticate("google", { scope: ["email", "profile"] , ...badOpts}));
-
-
-authRouter.get("/google/redirect", passportCB("google"), loginCB);
-//authRouter.get("/google/redirect", passport.authenticate("google", badOpts), loginCB);
+const authRouter = (new AuthRouter()).getRouter();
 
 export default authRouter;
