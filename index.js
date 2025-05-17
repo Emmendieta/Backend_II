@@ -56,6 +56,6 @@ SERVER.use(pathHandler);
 
 /* Video 03 -- Empieza en 18:56 */ //OK!!!!
 
-/* Video 04 - Empieza en 16:48 */  //FALTA EL NAVBAR pero despues de hacerlo continuar en 45:29
+/* Video 04 - Empieza en 16:48 */  //pero despues de hacerlo continuar en 45:29 HAY QUE CAMBIAR EN TODAS LAS passport por passportCB en todos los lugares que lo uso!
 
 /* Video 05 -- Empieza en 18:30 */

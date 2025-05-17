@@ -13,15 +13,17 @@ passport.use(
         async (req, email, password, done) => {
             try {
                 if (!req.body.first_name || !req.body.last_name || !req.body.age) {
-                    const error = new Error("Invalid Data!");
+/*                     const error = new Error("Invalid Data!");
                     error.statusCode = 400;
-                    throw error;
+                    throw error; */
+                    return done(null, null, { message: "Invalid Data!!", statusCode: 400 });
                 }
                 let user = await usersManager.readByFilter({ email });
                 if (user) {
-                    const error = new Error("Ivalid Credentials!");
-                    error.statusCode = 401;
-                    throw error;
+                    //const error = new Error("Ivalid Credentials!");
+                    //error.statusCode = 401;
+                    //throw error;
+                    return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 });
                 }
                 req.body.password = createHash(password);
                 user = await usersManager.createOne(req.body);
@@ -41,15 +43,17 @@ passport.use(
             try {
                 let user = await usersManager.readByFilter({ email });
                 if (!user) {
-                    const error = new Error("Invalid Credentials");
+/*                     const error = new Error("Invalid Credentials");
                     error.statusCode = 401;
-                    throw error;
+                    throw error; */
+                    return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 });
                 };
                 const verifyPassword = compareHash(password, user.password);
                 if (!verifyPassword) {
-                    const error = new Error("Invalid Credentials");
+/*                     const error = new Error("Invalid Credentials");
                     error.statusCode = 401;
-                    throw error;
+                    throw error; */
+                    return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 });
                 };
                 //Ahora creo el token:
                 const data = { user_id: user._id, email: user.email, role: user.role };
@@ -75,9 +79,10 @@ passport.use(
                 const { user_id, email, role } = data;
                 const user = await usersManager.readByFilter({ _id: user_id, email, role });
                 if (!user) {
-                    const error = new Error("Forbidden!!!");
+/*                     const error = new Error("Forbidden!!!");
                     error.statusCode = 403;
-                    throw error;
+                    throw error; */
+                    return done(null, null, { message: "Forbidden!", statusCode: 403 });                    
                 }
                 done(null, user);
             } catch (error) {
@@ -98,9 +103,10 @@ passport.use(
                 const { user_id, email, role } = data;
                 const user = await usersManager.readByFilter({ _id: user_id, email, role });
                 if(!user) {
-                    const error = new Error("Forbidden!!!");
+/*                     const error = new Error("Forbidden!!!");
                     error.statusCode = 403;
-                    throw error;
+                    throw error; */
+                    return done(null, null, { message: "Forbidden!", statusCode: 403 });
                 }
                 done(null, user);
             } catch (error) {
@@ -119,9 +125,10 @@ passport.use(
                 const { user_id, email, role } = data;
                 const user = await usersManager.readByFilter({ _id: user_id, email, role });
                 if (!user || user.role !== "ADMIN") {
-                    const error = new Error("Forbidden!!!");
+/*                     const error = new Error("Forbidden!!!");
                     error.statusCode = 403;
-                    throw error;
+                    throw error; */
+                    return done(null, null, { message: "Forbidden!", statusCode: 403 });
                 }
                 done(null, user);
             } catch (error) {

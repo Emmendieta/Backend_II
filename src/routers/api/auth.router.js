@@ -1,7 +1,8 @@
 import { response, Router } from "express";
-import passport from "../../middlewares/passport.mid.js";
+//import passport from "../../middlewares/passport.mid.js";
 import { usersManager } from "../../data/managers/mongo/manager.mongo.js";
 import { compareHash, createHash } from "../../helpers/hash.helper.js";
+import passportCB from "../../middlewares/passportCB.mid.js";
 
 
 const authRouter = Router();
@@ -151,25 +152,33 @@ const currentCB = async (req, res, next) =>  {
     }
 }; */
 
-const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
-const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"}
+/* const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
+const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"} */
 
 //authRouter.post("/register", registerCB);
-authRouter.post("/register", passport.authenticate("register", badOpts) ,registerCB);
+//authRouter.post("/register", passport.authenticate("register", badOpts) ,registerCB);
+authRouter.post("/register", passportCB("register") ,registerCB);
 //authRouter.post("/login", loginCB);
-authRouter.post("/login", passport.authenticate("login", badOpts) ,loginCB);
+authRouter.post("/login", passportCB("login") ,loginCB);
+//authRouter.post("/login", passport.authenticate("login", badOpts) ,loginCB);
 //La linea de abajo se tiene que mejorar:
 //authRouter.post("/signout", signOutCB);
-authRouter.post("/signout", passport.authenticate("user", forbiddenOpts), signOutCB);
+authRouter.post("/signout", passportCB("user"), signOutCB);
+//authRouter.post("/signout", passport.authenticate("user", forbiddenOpts), signOutCB);
 //Esta linea de abajo esta mal:
 //authRouter.post("/signout", passport.authenticate("current", forbiddenOpts), signOutCB);
-authRouter.post("/current", passport.authenticate("current", forbiddenOpts), currentCB);
+//authRouter.post("/current", passport.authenticate("current", forbiddenOpts), currentCB);
+authRouter.post("/current", passportCB("current"), currentCB);
+
 authRouter.get("/bad-auth", badAuthCB);
 authRouter.get("/forbidden", forbiddenCB); 
 /*Google*/
 //ESTE TIENE QUE SER CON UN POST Y UN BOTON EN REALIDAD:
-authRouter.get("/google", passport.authenticate("google", { scope: ["email", "profile"] , ...badOpts}));
-//authRouter.get("/google", passport.authenticate("google", { scope: ["email", "profile"], ...badOpts}));
-authRouter.get("/google/redirect", passport.authenticate("google", badOpts), loginCB);
+authRouter.get("/google", passportCB("google", { scope: ["email", "profile"] }));
+//authRouter.get("/google", passport.authenticate("google", { scope: ["email", "profile"] , ...badOpts}));
+
+
+authRouter.get("/google/redirect", passportCB("google"), loginCB);
+//authRouter.get("/google/redirect", passport.authenticate("google", badOpts), loginCB);
 
 export default authRouter;
