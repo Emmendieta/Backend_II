@@ -1,8 +1,10 @@
 import { Router } from "express";
+import setupResponses from "../middlewares/setupResponses.mid.js";
 
 class RouterHelper {
     constructor() {
         this.router = Router();
+        this.use(setupResponses);
     }
     getRouter = () => this.router;
     

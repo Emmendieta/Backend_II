@@ -4,69 +4,39 @@ import passport from "passport";
 import RouterHelper from "../../helpers/router.helper.js";
 
 const createOne = async (req, res) => {
-
-        const { method, originalUrl: url } = req;
         const data = req.body;
         const response = await productsManager.createOne(data);
-        res.status(201).json({ response, method, url });
+        res.json201(response, "Product Created!!!");
 
 };
 
 const readAll = async (req, res) => {
-
-        const { method, originalUrl: url } = req;
         const filter = req.query;
         const response = await productsManager.readAll(filter);
-        if (response.length === 0) {
-            const error = new Error("Not Found");
-            error.statusCode = 404;
-            throw error;
-        }
-        res.status(200).json({ response, method, url });
-
+        if (response.length === 0) { res.json404(); }
+        res.json200(response);
 };
 
 const readById = async (req, res) => {
-
-        const { method, originalUrl: url } = req;
         const { id } = req.params;
         const response = await productsManager.readById(id);
-        if (!response) {
-            const error = new Error("Not Found");
-            error.statusCode = 404;
-            throw error;
-        }
-        res.status(200).json({ response, method, url });
-
+        if (!response) { res.json404(); }
+        res.json200(response);
 };
 
 const updateById = async (req, res) => {
-
-        const { method, originalUrl: url } = req;
         const { id } = req.params;
         const data = req.body;
         const response = await productsManager.updateById(id, data);
-        if (!response) {
-            const error = new Error("Not Found");
-            error.statusCode = 404;
-            throw error;
-        }
-        res.status(200).json({ response, method, url });
-
+        if (!response) { res.json404(); }
+        res.json200(response);
 };
 
 const destroyById = async (req, res) => {
-
-        const { method, originalUrl: url } = req;
         const { id } = req.params;
         const response = await productsManager.destroyById(id);
-        if (!response) {
-            const error = new Error("Not Found");
-            error.statusCode = 404;
-            throw error;
-        }
-        res.status(200).json({ response, method, url });
-
+        if (!response) { res.json404(); }
+        res.json200(response);
 };
 
 const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden" };
