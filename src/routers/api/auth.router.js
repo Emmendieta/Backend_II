@@ -42,7 +42,7 @@ const loginCB = async (req, res, next) => {
         const { method, originalUrl: url} = req;
 
         /* ESTA PARTE VER SI HAY QUE MODIFICARLA YA QUE ES DEL VIDEO 2*/
-        const { email, password } = req.body;
+/*         const { email, password } = req.body;
         if(!email || !password) {
             const error = new Error("Invalid Credentials!");
             error.statusCode = 400;
@@ -59,7 +59,7 @@ const loginCB = async (req, res, next) => {
             const error = new Error("Invalid Credentials!");
             error.statusCode = 401;
             throw error;
-        }
+        } */
         //req.session.user_id = user._id;
         //req.session.email = user.email;
         //req.session.role = user.role;
@@ -68,7 +68,8 @@ const loginCB = async (req, res, next) => {
 
         /* FIN DE LA PARTE DEL VIDEO 2 */
         const { _id } = req.user;
-        return res.status(200).cookie("token", req.user.token, { maxAge: 24*60*60*1000}).json( {message: "Logged in successful!", response: _id, method, url });
+        const opts = { maxAge: 24 * 60 * 60 * 1000 };
+        return res.status(200).cookie("token", req.user.token, opts).json( {message: "Logged in successful!", response: _id, method, url });
     } catch (error) {
         next(error);
     }
@@ -140,7 +141,15 @@ const currentCB = async (req, res, next) =>  {
     } catch(error) {
         next(error);
     }
-}
+};
+
+/* const googleCB = (req, res, next) => {
+    try {
+        
+    } catch (error) {
+        next(error);
+    }
+}; */
 
 const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
 const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"}
@@ -156,6 +165,11 @@ authRouter.post("/signout", passport.authenticate("user", forbiddenOpts), signOu
 //authRouter.post("/signout", passport.authenticate("current", forbiddenOpts), signOutCB);
 authRouter.post("/current", passport.authenticate("current", forbiddenOpts), currentCB);
 authRouter.get("/bad-auth", badAuthCB);
-authRouter.get("/forbidden", forbiddenCB);  
+authRouter.get("/forbidden", forbiddenCB); 
+/*Google*/
+//ESTE TIENE QUE SER CON UN POST Y UN BOTON EN REALIDAD:
+authRouter.get("/google", passport.authenticate("google", { scope: ["email", "profile"] , ...badOpts}));
+//authRouter.get("/google", passport.authenticate("google", { scope: ["email", "profile"], ...badOpts}));
+authRouter.get("/google/redirect", passport.authenticate("google", badOpts), loginCB);
 
 export default authRouter;

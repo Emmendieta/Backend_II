@@ -4,6 +4,7 @@ import { ExtractJwt, Strategy as PassportStrategy } from "passport-jwt";
 import { usersManager } from "../data/managers/mongo/manager.mongo.js";
 import { compareHash, createHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
+import { Strategy as googleStrategy } from "passport-google-oauth2";
 
 passport.use(
     "register",
@@ -122,6 +123,38 @@ passport.use(
                     error.statusCode = 403;
                     throw error;
                 }
+                done(null, user);
+            } catch (error) {
+                done(error);
+            }
+        }
+    )
+);
+
+/*Google*/
+
+passport.use(
+    "google",
+    new googleStrategy(
+        { clientID: process.env.GOOGLE_ID, clientSecret: process.env.GOOGLE_SECRET_KEY , callbackURL: process.env.GOOGLE_URL },
+        async (accessToken, refreshToken, profile, done) => {
+            try {
+                const { email, name, picture, id } = profile; //El email cuando viene la auth de un tercero no se suele guardar en la BD
+                let user = await usersManager.readByFilter({ email: id });
+                if (!user) {
+                    user = {
+                        email: id,
+                        first_name: name.giveName,
+                        last_name: "Please, update your last name",
+                        password: createHash(email),
+                        age: 21
+                    };
+                    user = await usersManager.createOne(user);
+                };
+                const data = { user_id: user._id, email: user.email, role: user.role };
+                const token = createToken(data);
+                user.token = token;
+                done(null, user);
                 done(null, user);
             } catch (error) {
                 done(error);
