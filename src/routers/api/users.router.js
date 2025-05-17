@@ -5,94 +5,51 @@ import { createHash } from "../../helpers/hash.helper.js";
 import RouterHelper from "../../helpers/router.helper.js";
 
 const createUser = async (req, res) => {
-    const { method, originalUrl: url } = req;
     const data = req.body;
     if (!data || !data.first_name || !data.last_name || !data.email || !data.password || !data.age) {
-        const error = new Error("Missing information!");
-        error.status = 400;
-        throw error;
+        res.json400("Missing information!");
     }
     const { email } = data;
     const verifyUser = await usersManager.readByFilter({ email });
-    if (verifyUser) {
-        const error = new Error("User already exists!");
-        error.statusCode = 400;
-        throw error;
-    };
+    if (verifyUser) { res.json400("User already exists!"); };
     const passHash = createHash(data.password);
     data.password = passHash;
     const response = await usersManager.createOne(data);
-    res.status(200).json({ response, method, url });
+    res.json200(response);
 };
 
 const getUser = async (req, res) => {
-    const { method, originalUrl: url } = req;
     const { uid } = req.params;
-    if (!isValidObjectId(uid)) {
-        const error = new Error("Invalid user ID");
-        error.statusCode = 400;
-        throw error;
-    }
+    if (!isValidObjectId(uid)) { res.json400("Invalid user ID!"); }
     const response = await usersManager.readById(uid);
-    if (!response) {
-        const error = new Error("User not found!");
-        error.statusCode = 404;
-        throw error;
-    }
-    res.status(200).json({ response, method, url });
+    if (!response) { res.json404("User not found!"); }
+    res.json200(response);
 };
 
 const getAllUsers = async (req, res) => {
-    const { method, originalUrl: url } = req;
     const response = await usersManager.readAll();
-    if (response.length === 0) {
-        const error = new Error("Not Found!");
-        error.statusCode = 404;
-        throw error;
-    };
-    res.status(200).json({ response, method, url });
+    if (response.length === 0) { res.json404(); }
+    res.json200(response);
 };
 
 const updateUser = async (req, res) => {
-    const { method, originalUrl: url } = req;
     const { uid } = req.params;
     const data = req.body;
-    if (!isValidObjectId(uid)) {
-        const error = new Error("Invalid user ID");
-        error.statusCode = 400;
-        throw error;
-    }
-    if (!data) {
-        const error = new Error("No data to update");
-        error.statusCode = 400;
-        throw error;
-    }
+    if (!isValidObjectId(uid)) { res.json400("Invalid user ID!"); }
+    if (!data) { res.json400("No data to update"); }
     const verifyUser = await usersManager.readById(uid);
-    if (!verifyUser) {
-        const error = new Error("User not found!");
-        error.statusCode = 404;
-        throw error;
-    };
+    if (!verifyUser) { res.json404("User not Found!!!"); }
     const response = await usersManager.updateById(uid, data);
-    res.status(200).json({ response, method, url });
+    res.json200(response);
 };
 
 const deleteUser = async (req, res) => {
-    const { method, originalUrl: url } = req;
     const { uid } = req.params;
-    if (!isValidObjectId(uid)) {
-        const error = new Error("Invalid user ID");
-        error.statusCode = 400;
-        throw error;
-    }
+    if (!isValidObjectId(uid)) { res.json400("Invalid user ID!"); }
     const verifyUser = await usersManager.readById(uid);
-    if (!verifyUser) {
-        const error = new Error("User not found!");
-        error.statusCode = 404;
-        throw error;
-    };
+    if (!verifyUser) { res.json404("User not Found!!!"); }
     const response = await usersManager.destroyById(uid);
-    res.status(200).json({ response, method, url });
+    res.json200(response);
 };
 
 class UserRouter extends RouterHelper {
@@ -101,11 +58,11 @@ class UserRouter extends RouterHelper {
         this.init();
     }
     init = () => {
-        this.read("/:uid", getUser);
-        this.read("/", getAllUsers);
-        this.create("/", createUser);
-        this.update("/:uid", updateUser);
-        this.destroy("/:uid", deleteUser);
+        this.read("/:uid", ["USER", "ADMIN"], getUser);
+        this.read("/", ["ADMIN"], getAllUsers);
+        this.create("/", ["PUBLIC"], createUser);
+        this.update("/:uid", ["USER", "ADMIN"], updateUser);
+        this.destroy("/:uid", ["ADMIN"], deleteUser);
     }
 }
 

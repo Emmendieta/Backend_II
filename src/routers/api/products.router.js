@@ -42,20 +42,17 @@ const destroyById = async (req, res) => {
 const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden" };
 
 class ProductsRotuer extends RouterHelper {
-    constructor() {
-        super();
-        this.init();
-    }
-    init = () => {
-        this.create("/", passport.authenticate("admin", forbiddenOpts), createOne);
-        //productsRouter.post("/", createOne);
-        this.read("/", readAll);
-        this.read("/:pid", readById);
-        this.update("/:pid", passport.authenticate("admin", forbiddenOpts), updateById);
-        //productsRouter.put("/:id", updateById);
-        this.destroy("/:pid", passport.authenticate("admin", forbiddenOpts), destroyById);
-        this.destroy("/:id", destroyById);
-    }
+        constructor() {
+                super();
+                this.init();
+        }
+        init = () => {
+                this.create("/", ["ADMIN"], createOne);
+                this.read("/", ["PUBLIC"], readAll);
+                this.read("/:pid", ["PUBLIC"], readById);
+                this.update("/:pid", ["ADMIN"], updateById);
+                this.destroy("/:pid", ["ADMIN"], destroyById);
+        }
 };
 
 const productsRouter = (new ProductsRotuer()).getRouter();

@@ -1,5 +1,6 @@
 import { Router } from "express";
 import setupResponses from "../middlewares/setupResponses.mid.js";
+import setupPolicies from "../middlewares/setupPolicies.mid.js";
 
 class RouterHelper {
     constructor() {
@@ -27,18 +28,18 @@ class RouterHelper {
     
     /* Métodos CRUD */
     //Create:
-    create = (path, ...middelwares) => this.router.post(path, this.applyMiddlewares(middelwares));
+    create = (path, policies, ...middelwares) => this.router.post(path, setupPolicies(policies), this.applyMiddlewares(middelwares));
     //Read:
-    read = (path, ...middelwares) => this.router.get(path, this.applyMiddlewares(middelwares)); 
+    read = (path, policies, ...middelwares) => this.router.get(path, setupPolicies(policies), this.applyMiddlewares(middelwares)); 
     //Update:
-    update = (path, ...middelwares) => this.router.put(path, this.applyMiddlewares(middelwares));
+    update = (path, policies, ...middelwares) => this.router.put(path, setupPolicies(policies), this.applyMiddlewares(middelwares));
     //Delete:
-    destroy = (path, ...middelwares) => this.router.delete(path, this.applyMiddlewares(middelwares));
+    destroy = (path, policies, ...middelwares) => this.router.delete(path, setupPolicies(policies), this.applyMiddlewares(middelwares));
 
     //Use:
     use = (path, ...middelwares) => this.router.use(path, this.applyMiddlewares(middelwares));
     //Render:
-    render = (path, ...middelwaresRender) => this.router.get(path, this.applyMiddelwaresRender(middelwaresRender));
+    render = (path, policies, ...middelwaresRender) => this.router.get(path, setupPolicies(policies), this.applyMiddelwaresRender(middelwaresRender));
 }
 
 export default RouterHelper;

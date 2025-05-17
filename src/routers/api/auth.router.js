@@ -48,16 +48,16 @@ class AuthRouter extends RouterHelper {
         this.init();
     }
     init = () => {
-        this.create("/register", passportCB("register"), registerCB);
-        this.create("/login", passportCB("login"), loginCB);
-        this.create("/signout", passportCB("user"), signOutCB);
-        this.create("/current", passportCB("current"), currentCB);
-        this.read("/bad-auth", badAuthCB);
-        this.read("/forbidden", forbiddenCB);
+        this.create("/register", ["PUBLIC"], passportCB("register"), registerCB);
+        this.create("/login", ["PUBLIC"], passportCB("login"), loginCB);
+        this.create("/signout", ["USER", "ADMIN"], signOutCB);
+        this.create("/current", ["USER", "ADMIN"], currentCB);
+        this.read("/bad-auth", ["PUBLIC"], badAuthCB);
+        this.read("/forbidden", ["PUBLIC"], forbiddenCB);
         /*Google*/
         //ESTA LINEA DE ABAJO TIENE QUE SER CON UN POST Y UN BOTON EN REALIDAD:
-        this.read("/google", passportCB("google", { scope: ["email", "profile"] }));
-        this.read("/google/redirect", passportCB("google"), loginCB);
+        this.read("/google", ["PUBLIC"], passportCB("google", { scope: ["email", "profile"] }));
+        this.read("/google/redirect", ["PUBLIC"], passportCB("google"), loginCB);
     };
 };
 
