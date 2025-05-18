@@ -32,13 +32,14 @@ const getAllUsers = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-    const { uid } = req.params;
+    //const { uid } = req.params;
+    const { _id } = req.user
     const data = req.body;
-    if (!isValidObjectId(uid)) { res.json400("Invalid user ID!"); }
+    if (!isValidObjectId(_id)) { res.json400("Invalid user ID!"); }
     if (!data) { res.json400("No data to update"); }
-    const verifyUser = await usersManager.readById(uid);
+    const verifyUser = await usersManager.readById(_id);
     if (!verifyUser) { res.json404("User not Found!!!"); }
-    const response = await usersManager.updateById(uid, data);
+    const response = await usersManager.updateById(_id, data);
     res.json200(response);
 };
 
@@ -60,7 +61,7 @@ class UserRouter extends RouterHelper {
         this.read("/:uid", ["USER", "ADMIN"], getUser);
         this.read("/", ["ADMIN"], getAllUsers);
         this.create("/", ["PUBLIC"], createUser);
-        this.update("/:uid", ["USER", "ADMIN"], updateUser);
+        this.update("/", ["USER", "ADMIN"], updateUser);
         this.destroy("/:uid", ["ADMIN"], deleteUser);
     };
 }

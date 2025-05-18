@@ -16,8 +16,9 @@ document.getElementById("btnUpdate").addEventListener("click", async () => {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             };
+            
 
-            const url = "/api/auth/update-user";
+            const url = "/api/users";
             let response = await fetch(url, opts);
             response = await response.json();
             if (response.error) {
