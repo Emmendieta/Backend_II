@@ -1,18 +1,26 @@
-<h1>Login</h1>
+<head>
+    <link rel="stylesheet" href="/css/Register.css">
+</head>
 
-<form>
-    <div class="mb-3">
-        <label for="inputEmailLogin" class="form-label">Email:</label>
-        <input type="email" class="form-control" id="inputEmailLogin">
-    </div>
-    <div class="mb-3">
-        <label for="inputPasswordLogin" class="form-label">Password:</label>
-        <input type="password" class="form-control" id="inputPasswordLogin">
-    </div>
-    <div>
-        <input type="button" id="btnGoBack" value="Home" />
-        <input type="button" id="btnLogin" value="Login" />
-    </div>
-</form>
+<div id="registerDivHead">
+    <h1 id="registerDivH1">Login</h1>
+</div>
+
+<div id="registerDivForm">
+    <form id="registerForm">
+        <div class="mb-3">
+            <label for="inputEmailLogin" class="form-label">Email:</label>
+            <input type="email" class="form-control" id="inputEmailLogin">
+        </div>
+        <div class="mb-3">
+            <label for="inputPasswordLogin" class="form-label">Password:</label>
+            <input type="password" class="form-control" id="inputPasswordLogin">
+        </div>
+        <div id="registerFormDivBtns">
+            <a class="btn btn-outline-success" type="button" id="btnGoBack" value="Home" href="/">Home</a>
+            <a class="btn btn-outline-success" type="button" id="btnLogin" value="Login">Login</a>
+        </div>
+    </form>
+</div>
 
 <script src="/scripts/login.js"></script>

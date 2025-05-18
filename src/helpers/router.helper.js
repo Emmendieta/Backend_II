@@ -8,7 +8,6 @@ class RouterHelper {
         this.use(setupResponses);
     }
     getRouter = () => this.router;
-    
     //Función que aplica todas las lógicas que se repiten pero para API:
     applyMiddlewares = (middelwares) => middelwares.map((mid) => async(req, res, next) => {
         try {
@@ -17,7 +16,7 @@ class RouterHelper {
             next(error);
         }
     });
-
+    //Función para Renderizar:
     applyMiddelwaresRender = (middelwaresRender) => middelwaresRender.map(midRend => async(req, res, next) => {
         try {
             await midRend(req, res, next);
@@ -35,11 +34,11 @@ class RouterHelper {
     update = (path, policies, ...middelwares) => this.router.put(path, setupPolicies(policies), this.applyMiddlewares(middelwares));
     //Delete:
     destroy = (path, policies, ...middelwares) => this.router.delete(path, setupPolicies(policies), this.applyMiddlewares(middelwares));
-
+    /* Fin de Métodos CRUD */
     //Use:
     use = (path, ...middelwares) => this.router.use(path, this.applyMiddlewares(middelwares));
     //Render:
     render = (path, policies, ...middelwaresRender) => this.router.get(path, setupPolicies(policies), this.applyMiddelwaresRender(middelwaresRender));
-}
+};
 
 export default RouterHelper;

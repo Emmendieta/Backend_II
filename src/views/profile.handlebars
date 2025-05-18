@@ -1,26 +1,30 @@
-<div id="homeDivTitle">
-    <section id="homeDivSectTop">
-        <h2 id="homeh2Title">Profile</h2>
+<head>
+    <link rel="stylesheet" href="/css/Profile.css">
+</head>
+
+<div id="profileDiv">
+    <section id="profileDivSectTop">
+        <h2 id="profileDivH2Title">Profile</h2>
     </section>
-    <section id="homeDivSectMiddle">
-                <div class="homeUlLiDiv">
-                    <h3 class="homeUlLih3">First Name: </h3>
-                    <h3 class="homeUlLih3">{{user.first_name}}</h3>
+    <section id="profileDivDivSectMiddle">
+                <div class="profileDivDiv">
+                    <h3 class="profileDivh3">First Name: </h3>
+                    <h3 class="profileDivh3">{{user.first_name}}</h3>
                 </div>
-                <div class="homeUlLiDiv">
-                    <h3 class="homeUlLih3">last Name: </h3>
-                    <h3 class="homeUlLih3">{{user.last_name}}</h3>
+                <div class="profileDivDiv">
+                    <h3 class="profileDivh3">last Name: </h3>
+                    <h3 class="profileDivh3">{{user.last_name}}</h3>
                 </div>
-                <div class="homeUlLiDiv">
-                    <h4 class="homeUlLih4">Age:</h4>
-                    <h4 class="homeUlLih4">{{user.age}}</h4>
+                <div class="profileDivDiv">
+                    <h4 class="profileDivh4">Age:</h4>
+                    <h4 class="profileDivh4">{{user.age}}</h4>
                 </div>
-                <div class="homeUlLiDiv">
-                    <h4 class="homeUlLih4">Email: </h4>
-                    <h4 class="homeUlLih4">{{user.email}}</h4>
+                <div class="profileDivDiv">
+                    <h4 class="profileDivh4">Email: </h4>
+                    <h4 class="profileDivh4">{{user.email}}</h4>
                 </div>
-                <div class="homeUlLiDivBottom">
-                    <a class="btnAddProductToCart" href="/update-user">Update data</a>
+                <div class="profileDivDivBottom">
+                    <a class="btn btn-outline-success" id="btnUpdateUserData" href="/update-user">Update data</a>
                 </div>
     </section>
 </div>

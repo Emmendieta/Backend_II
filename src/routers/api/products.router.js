@@ -39,7 +39,7 @@ const destroyById = async (req, res) => {
         res.json200(response);
 };
 
-const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden" };
+/* const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden" }; */
 
 class ProductsRotuer extends RouterHelper {
         constructor() {

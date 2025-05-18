@@ -1,7 +1,5 @@
-import { response, Router } from "express";
-//import passport from "../../middlewares/passport.mid.js";
 import { usersManager } from "../../data/managers/mongo/manager.mongo.js";
-import { compareHash, createHash } from "../../helpers/hash.helper.js";
+import { createHash } from "../../helpers/hash.helper.js";
 import passportCB from "../../middlewares/passportCB.mid.js";
 import RouterHelper from "../../helpers/router.helper.js";
 
@@ -29,15 +27,6 @@ const badAuthCB = (req, res) => res.json401();
 const forbiddenCB = (req, res) => res.json403();
 
 const currentCB = async (req, res) => res.json200(true, "User is Online!")  
-
-
-/* const googleCB = (req, res, next) => {
-    try {
-        
-    } catch (error) {
-        next(error);
-    }
-}; */
 
 /* const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
 const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"} */

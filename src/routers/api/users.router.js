@@ -1,4 +1,3 @@
-import { Router } from "express";
 import { usersManager } from "../../data/managers/mongo/manager.mongo.js";
 import { isValidObjectId } from "mongoose";
 import { createHash } from "../../helpers/hash.helper.js";
@@ -63,7 +62,7 @@ class UserRouter extends RouterHelper {
         this.create("/", ["PUBLIC"], createUser);
         this.update("/:uid", ["USER", "ADMIN"], updateUser);
         this.destroy("/:uid", ["ADMIN"], deleteUser);
-    }
+    };
 }
 
 const usersRouter = (new UserRouter()).getRouter();

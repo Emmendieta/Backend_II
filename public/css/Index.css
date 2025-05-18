@@ -1,0 +1,46 @@
+#indexDivHead {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+#indexDivH1 {
+    margin: 15px;
+    color: green;
+}
+
+#productDivCard {
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    transition: 1s;
+}
+.card:hover {
+    transition: 1.5s;
+    box-shadow: rgb(85, 85, 85) 5px 5px 5px 5px;
+}
+
+
+.card-body {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.productsUlLiDiv {
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    align-items: center;
+    margin: 5px 10px;
+}
+
+.productsUlLih3 {
+    margin-right: 5px;
+}
+
+.card-text, .productsUlLih3 {
+    font-size: 15px;
+}

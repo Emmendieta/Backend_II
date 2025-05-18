@@ -1,12 +1,10 @@
-import { Router } from "express";
 import { productsManager } from "../data/managers/mongo/manager.mongo.js";
 import { isValidObjectId } from "mongoose";
-import passport from "../middlewares/passport.mid.js";
 import RouterHelper from "../helpers/router.helper.js";
 
 const indexView = async (req, res) => {
         const products = await productsManager.readAll();
-        //FALTA ACA DETERMINAR SI NO SE ENCUENTRA NINGUN PRODUCTO!!!!
+        if (products.length === 0) { res.json404("Not Products avalible!").render("error"); }
         res.status(200).render("index", { products });
 };
 
@@ -49,7 +47,6 @@ class ViewsRouter extends RouterHelper {
                 this.render("/register", ["PUBLIC"], registerView);
                 this.render("/login", ["PUBLIC"], loginView);
                 this.render("/details/:pid", ["PUBLIC"], detailsView);
-                //this.render("/profile", passport.authenticate("user", { session: false }), profileView);
                 this.render("/profile", ["USER", "ADMIN"], profileView);
                 this.render("/update-user", ["USER", "ADMIN"], updateView)
         };

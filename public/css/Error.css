@@ -1,0 +1,25 @@
+#divErrorMessage {
+    display: flex;
+    justify-content: center;
+}
+
+#errorMessage {
+    font-size: 40px;
+    margin: 20px 5px;
+    color: red;
+}
+
+#divErrorImage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#errorImage {
+    height: auto;
+    max-width: 100%;
+    width: 100%;
+    object-fit: contain;
+}

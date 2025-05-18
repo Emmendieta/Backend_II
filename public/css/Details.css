@@ -1,0 +1,52 @@
+#detailsDivSectTop {
+    display: flex;
+    justify-content: center;
+}
+
+#detailsh2Title {
+    margin: 15px;
+    color: green;
+}
+
+#detailsDivSectMiddle {
+    display: flex;
+    align-content: center;
+    flex-direction: column;
+}
+
+.detailsUlLiDiv {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.detailsUlLih3, .detailsUlLiP {
+    margin: 10px 5px;
+}
+
+.detailsUlLiDivBottom {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.detailsUlLiDivBottomQuantity {
+    display: flex;
+    flex-direction: row;
+    align-items: center; 
+}
+
+.detailsUlLiDivBottomQuantityP {
+    margin-top: 15px;
+    margin-right: 10px;
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    height: 100%;  
+}
+
+.btnAddProductToCart {
+    margin: 10px;
+}

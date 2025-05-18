@@ -9,6 +9,7 @@ import indexRouter from "./src/routers/index.router.js";
 import dbConnect from "./src/helpers/dbConnect.helper.js";
 import cookieParser from "cookie-parser";
 import session from "express-session";
+import MongoStore from "connect-mongo";
 
 /* Server Settings*/
 
@@ -17,15 +18,14 @@ const PORT = process.env.PORT || 8080;
 const ready = async () => {
     await dbConnect(process.env.LINK_MONGODB);
     console.log(`Server ready on port ${PORT}`);
-}
-SERVER.listen(PORT, ready)
+};
+SERVER.listen(PORT, ready);
 
 /* Engine Settings */
 
 SERVER.engine("handlebars", engine());
 SERVER.set("view engine", "handlebars");
 SERVER.set("views", __dirname + "/src/views"); 
-
 
 /* Middlewares Settings */
 
@@ -35,12 +35,19 @@ SERVER.use(EXPRESS.urlencoded( { extended: true } ));
 SERVER.use(EXPRESS.static("public"));
 SERVER.use(morgan("dev"));
 
-/* ESTO DESPUES SE VA A BORRAR */
-//Sessions setting
-//SERVER.use()
-/* HASTA ACA SE BORRA */
+/* Sessions Settings */
 
-
+SERVER.use(
+    session({
+        secret: process.env.SECRET,
+        resave: true,
+        saveUninitialized: true,
+        cookies: { maxAge: 60 * 1000 },
+        store: new MongoStore( {
+            mongoUrl: process.env.LINK_MONGODB,
+        }),
+    })
+);
 
 /* Router Settings */
 
