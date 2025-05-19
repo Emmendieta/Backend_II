@@ -5,12 +5,13 @@ import RouterHelper from "../../helpers/router.helper.js";
 
 const registerCB = async (req, res) => {
     const { _id } = req.user;
-    if (!req.body.email || !req.body.password || !req.body.age) { res.json401("Invalid Data!"); };
-    const { email } = req.body;
+/*     const {email, password, age} = req.body; */
+/*     console.log(email);
+    if (!email || !password || !age) { res.json401("Invalid Data!"); };
     const user = await usersManager.readByFilter({ email });
     if (user) { res.json403("User already exists!"); };
     req.body.password = createHash(req.body.password);
-    const newUser = await usersManager.createOne(req.body);
+    const newUser = await usersManager.createOne(req.body); */
     res.json201(_id, "Registered!");
 };
 
@@ -26,7 +27,7 @@ const badAuthCB = (req, res) => res.json401();
 
 const forbiddenCB = (req, res) => res.json403();
 
-const currentCB = async (req, res) => res.json200(true, "User is Online!")  
+const currentCB = async (req, res) => res.json200(req.user.role, "User is online!!!");
 
 /* const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
 const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"} */

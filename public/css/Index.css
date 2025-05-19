@@ -4,9 +4,31 @@
     width: 100%;
 }
 
+#productsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
+    gap: 20px;
+}
+
+#productsGrid li {
+    flex: 0 1 calc(33.333% - 40px);
+    display: flex;
+    justify-content: center;
+}
+
+
 #indexDivH1 {
     margin: 15px;
     color: green;
+}
+
+#indexProductAddDiv {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 35px;
 }
 
 #productDivCard {
@@ -21,7 +43,6 @@
     transition: 1.5s;
     box-shadow: rgb(85, 85, 85) 5px 5px 5px 5px;
 }
-
 
 .card-body {
     display: flex;

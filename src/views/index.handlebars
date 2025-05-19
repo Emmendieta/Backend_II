@@ -5,9 +5,10 @@
 <div id="indexDivHead">
     <h1 id="indexDivH1">Products List</h1>
 </div>
+<div id="indexProductAddDiv"></div>
 <div>
     <section>
-        <ul>
+        <ul id="productsGrid">
             {{#each products}}
             <li>
                 <div class="card" style="width: 18rem;" id="productDivCard">
@@ -17,7 +18,7 @@
                     <div class="card-body">
                         <div class="productsUlLiDiv">
                             <h3 class="productsUlLih3">Title: </h3>
-                            <h3 class="card-textv productsUlLih3">{{this.title}}</h3>
+                            <h3 class="card-textv productsUlLih3" id="productTitleId">{{this.title}}</h3>
                         </div>
                         <div class="productsUlLiDiv">
                             <h3 class="productsUlLih3">Category: </h3>
@@ -47,3 +48,5 @@
     </ul>
 
 </div>
+
+<script src="/scripts/index.js"></script>

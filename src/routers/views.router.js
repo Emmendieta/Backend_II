@@ -5,8 +5,11 @@ import RouterHelper from "../helpers/router.helper.js";
 const indexView = async (req, res) => {
         const products = await productsManager.readAll();
         if (products.length === 0) { res.json404("Not Products avalible!").render("error"); }
-        res.status(200).render("index", { products });
+        const user = req.user || null;
+        res.status(200).render("index", { products, isAdmin: user?.role === "ADMIN" });
 };
+
+/* User View */
 
 const registerView = async (req, res) => {
         res.status(200).render("register");
@@ -37,6 +40,12 @@ const updateView = async (req, res) => {
         res.status(200).render("update-user");
 };
 
+/* Products Views */
+
+const newProductView = async (req, res) => {
+        res.status(200).render("product");
+};
+
 class ViewsRouter extends RouterHelper {
         constructor() {
                 super();
@@ -48,7 +57,8 @@ class ViewsRouter extends RouterHelper {
                 this.render("/login", ["PUBLIC"], loginView);
                 this.render("/details/:pid", ["PUBLIC"], detailsView);
                 this.render("/profile", ["USER", "ADMIN"], profileView);
-                this.render("/update-user", ["USER", "ADMIN"], updateView)
+                this.render("/update-user", ["USER", "ADMIN"], updateView);
+                this.render("/products/create", ["ADMIN"], newProductView)
         };
 };
 

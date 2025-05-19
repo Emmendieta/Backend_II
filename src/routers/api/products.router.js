@@ -18,23 +18,24 @@ const readAll = async (req, res) => {
 };
 
 const readById = async (req, res) => {
-        const { id } = req.params;
-        const response = await productsManager.readById(id);
+        const { pid } = req.params;
+        const response = await productsManager.readById(pid);
         if (!response) { res.json404(); }
         res.json200(response);
 };
 
 const updateById = async (req, res) => {
-        const { id } = req.params;
+        const { pid } = req.params;
         const data = req.body;
-        const response = await productsManager.updateById(id, data);
+        const response = await productsManager.updateById(pid, data);
         if (!response) { res.json404(); }
         res.json200(response);
 };
 
 const destroyById = async (req, res) => {
-        const { id } = req.params;
-        const response = await productsManager.destroyById(id);
+        const { pid } = req.params;
+        console.log(pid)
+        const response = await productsManager.destroyById(pid);
         if (!response) { res.json404(); }
         res.json200(response);
 };

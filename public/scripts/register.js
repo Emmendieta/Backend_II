@@ -1,11 +1,17 @@
 document.getElementById("btnRegister").addEventListener("click", async () => {
     try {
-        const data = {
-            first_name: document.getElementById("inputFirstNameRegister").value,
-            last_name: document.getElementById("inputLastNameRegister").value,
-            age: document.getElementById("inputAgeRegister").value,
-            email: document.getElementById("inputEmailRegister").value,
-            password: document.getElementById("inputPasswordRegister").value,
+            const first_name= document.getElementById("inputFirstNameRegister").value;
+            const last_name= document.getElementById("inputLastNameRegister").value;
+            let age= document.getElementById("inputAgeRegister").value;
+            const email= document.getElementById("inputEmailRegister").value;
+            const password= document.getElementById("inputPasswordRegister").value;
+            age = Number(age);
+            const data = {
+            first_name: first_name,
+            last_name: last_name,
+            age: age,
+            email: email,
+            password: password,
         };
         const opts = {
             method: "POST",
