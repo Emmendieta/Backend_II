@@ -71,7 +71,7 @@ btnAddToCart.addEventListener("click", async () => {
                                 alert("Error: The Cart has not been asociate to the User!");
                                 return;
                             }
-                            alert("The Cart created success!");
+                            alert("The Cart created success and has been added the Product required!");
                         } else {
                             //En caso de que tenga un carrito sin cerrar:
                             let cid = await response.json();
@@ -86,15 +86,55 @@ btnAddToCart.addEventListener("click", async () => {
                             cart = await response.json();   
                             cart = cart.response;
                             const products = cart.products;
-                            console.log(products);
+                            const productInCart = products.find(prod => prod.product === productId);
+                            if (productInCart) {
+                                //En Caso de que el producto exista en el carrito actualizo la cantidad:
+                                let quantityInCart = productInCart.quantity;
+                                quantityInCart = Number(quantityInCart);
+                                //Verifico que la cantidad no sea la misma:
+                                if (quantityInCart === quantity) {
+                                    
+                                    alert("The quantity is the same!");
+                                } else {
+                                    //Actualizo la cantidad del producto en el carrito:
+                                    const updatedPorducts = products.map (prod => {
+                                        if (prod.product === productId) { return { ...prod, quantity: quantity }; }
+                                        return prod;
+                                    })
+                                    //productInCart.quantity = quantity;
+                                    opts = {
+                                        method: "PUT",
+                                        headers: { "Content-Type": "application/json" },
+                                        body: JSON.stringify({products: updatedPorducts }),
+                                    };
+                                    //Actualizo los datos del carrito:
+                                    url = `/api/carts/${cid}`;
+                                    response = await fetch(url, opts);
+                                    return alert("Product quantity updated!");                                    
+                                }
+                            } else {
+                                const newProduct = {
+                                    product: productId, 
+                                    quantity: quantity
+                                };
+                                const updateProducts = [...products, newProduct];
+                                opts = {
+                                    method: "PUT",
+                                    headers: { "Content-Type": "application/json" },
+                                    body: JSON.stringify({products: updateProducts}),
+                                };
+                                url = `/api/carts/${cid}`;
+                                response = await fetch(url, opts);
+                                response = await response.json();
+                                if(!response.response) {return alert("Error: Error adding new product to cart!"); }
+                                else { return alert("New Product added to the Cart!!"); }
+                            }
                         }
-
                     }
-
                 }
             }
         }
     } catch (error) {
-
+        console.log(error);
     }
 });

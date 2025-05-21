@@ -59,6 +59,13 @@ const returnCartUser = async (req, res) => {
     return res.json200(activeCart);
 };
 
+const returnAllCartsUser = async (req, res) => {
+    const { uid } = req.params;
+    const user = await usersManager.readById(uid);  
+    const carts = user.cart;
+    return res.json200(carts);
+}
+
 const asociateCartToUser = async (req, res) => {
     const { uid } = req.params;
     const { cartId } = req.body;
@@ -83,6 +90,7 @@ class UserRouter extends RouterHelper {
         this.destroy("/:uid", ["ADMIN"], deleteUser);
         this.read("/:uid/cart", ["USER", "ADMIN"], returnCartUser);
         this.update("/:uid/cart", ["USER", "ADMIN"], asociateCartToUser);
+        this.read("/:uid/carts", ["USER", "ADMIN"], returnAllCartsUser);
     };
 }
 

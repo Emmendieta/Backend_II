@@ -26,11 +26,22 @@ const readById = async (req, res) => {
 };
 
 const updateById = async (req, res) => {
-
+    const { cid } = req.params;
+    const data = req.body;
+    if(!isValidObjectId(cid)) { res.json400("Cart id invalid!"); }
+    const response = await cartsManager.updateById(cid, data);
+    res.json200(response);
 };
 
 const destroyById = async (req, res) => {
 
+};
+
+const productsCart = async (req, res) => {
+    const { cid } = req.params;
+    const response = await cartsManager.readById(cid);
+    const products = response.products;
+    res.json200(products);      
 };
 
 
@@ -45,6 +56,7 @@ class CartRouter extends RouterHelper {
         this.read("/:cid", ["USER", "ADMIN"], readById);
         this.update("/:cid", ["USER", "ADMIN"], updateById);
         this.destroy("/:cid", ["USER", "ADMIN"], destroyById);
+        this.read("/:cid/products", ["USER", "ADMIN"], productsCart);   
     };
 }
 
