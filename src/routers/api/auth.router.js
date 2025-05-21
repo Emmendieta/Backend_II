@@ -27,7 +27,9 @@ const badAuthCB = (req, res) => res.json401();
 
 const forbiddenCB = (req, res) => res.json403();
 
-const currentCB = async (req, res) => res.json200(req.user.role, "User is online!!!");
+//const currentCB = async (req, res) => res.json200(req.user.role, "User is online!!!");
+const currentCB = async (req, res) => res.json200(req.user, "User is online!!!");
+
 
 /* const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
 const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"} */
@@ -42,6 +44,7 @@ class AuthRouter extends RouterHelper {
         this.create("/login", ["PUBLIC"], passportCB("login"), loginCB);
         this.create("/signout", ["USER", "ADMIN"], signOutCB);
         this.create("/current", ["USER", "ADMIN"], currentCB);
+        this.create("/online", ["USER", "ADMIN"], currentCB);
         this.read("/bad-auth", ["PUBLIC"], badAuthCB);
         this.read("/forbidden", ["PUBLIC"], forbiddenCB);
         /*Google*/

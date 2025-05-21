@@ -5,20 +5,17 @@
 }
 
 #productsGrid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
     padding: 0;
     list-style: none;
-    gap: 20px;
 }
 
 #productsGrid li {
-    flex: 0 1 calc(33.333% - 40px);
     display: flex;
     justify-content: center;
 }
-
 
 #indexDivH1 {
     margin: 15px;
@@ -37,8 +34,11 @@
 }
 
 .card {
+    width: 100%;
+    max-width: 18rem;
     transition: 1s;
 }
+
 .card:hover {
     transition: 1.5s;
     box-shadow: rgb(85, 85, 85) 5px 5px 5px 5px;
@@ -62,6 +62,7 @@
     margin-right: 5px;
 }
 
-.card-text, .productsUlLih3 {
+.card-text,
+.productsUlLih3 {
     font-size: 15px;
 }

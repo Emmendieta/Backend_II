@@ -1,6 +1,6 @@
 /* VER TODO ESTE SI ESTA OK!!!! */
 
-import { Schema, Types, model } from "mongoose";
+import { Schema, model } from "mongoose";
 
 const collection = "products";
 const schema = new Schema(

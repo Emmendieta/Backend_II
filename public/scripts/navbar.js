@@ -19,8 +19,8 @@ const verifyCurrent = async () => {
         } else {
             divNavBarButtons.innerHTML = `
                 <a class="btn btn-outline-success" href="/profile" id="navBarBtnpProfile">Profile</a>
-                <a class="btn btn-outline-success" href="/cart" id="navBarBtnCarts">Carts</a>
-                <button class="btn btn-outline-success" type="submit" id="navBarBtnSignOut">Sing Out</button>
+                <a class="btn btn-outline-success" href="/carts" id="navBarBtnCarts">Carts</a>
+                <button class="btn btn-outline-success" type="submit" id="navBarBtnSignOut">Sign Out</button>
             `
         };
         document.getElementById("navBarBtnSignOut").addEventListener("click", async () => {

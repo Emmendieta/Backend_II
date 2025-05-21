@@ -18,4 +18,4 @@ const usersManager = new Manager(User);
 const productsManager = new Manager(Product);
 const cartsManager = new Manager(Cart);
 
-export { usersManager, productsManager,cartsManager };
+export { usersManager, productsManager, cartsManager };

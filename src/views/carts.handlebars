@@ -1,0 +1,37 @@
+<div>
+    <h1>Lists of Carts</h1>
+</div>
+<div>
+    <ul>
+        {{#each carts}}
+        <li>
+            <h3>List of Products</h3>
+            <ul>
+                {{#each cart.products}}
+                <li>
+                    <div class="productsUlLiDiv">
+                        <img src={{this.image}} class="card-img-top object-fit-cover" alt={{this._id}}>
+                    </div>
+                    <div class="productsUlLiDiv">
+                        <h3 class="productsUlLih3">Title: </h3>
+                        <h3 class="card-textv productsUlLih3" id="productTitleId">{{this.title}}</h3>
+                    </div>
+                    <div class="productsUlLiDiv">
+                        <h3 class="productsUlLih3">$ </h3>
+                        <h3 class="card-textv productsUlLih3">{{this.price}}</h3>
+                    </div>
+                    <div class="productsUlLiDiv">
+                        <h3 class="productsUlLih3">Code: </h3>
+                        <h3 class="card-textv productsUlLih3">{{this.code}}</h3>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+            <div class="productsUlLiDiv">
+                <h3 class="productsUlLih3">Quantity: </h3>
+                <h3 class="card-textv productsUlLih3">{{this.quantity}}</h3>
+            </div>
+        </li>
+        {{/each}}
+    </ul>
+</div>

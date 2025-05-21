@@ -1,4 +1,4 @@
-import { productsManager } from "../data/managers/mongo/manager.mongo.js";
+import { cartsManager, productsManager } from "../data/managers/mongo/manager.mongo.js";
 import { isValidObjectId } from "mongoose";
 import RouterHelper from "../helpers/router.helper.js";
 
@@ -43,7 +43,25 @@ const updateView = async (req, res) => {
 /* Products Views */
 
 const newProductView = async (req, res) => {
-        res.status(200).render("product");
+        res.status(200).render("product", {product: null});
+};
+
+const editProductView = async (req, res) => {
+        const { pid } = req.params;
+        if(!isValidObjectId(pid)) { return res.status(500).render("error", { error: "Product not found!" }); }
+        const product = await productsManager.readById(pid);
+        if(!product) return res.status(404).render("error");
+        res.status(200).render("product", {product});
+};
+
+/* Carts View */
+
+const userCartsView = async (req, res) => {
+        const { user } = req;
+        let carts;
+        if(user.cart.length === 0) { carts = cartsManager.createOne(); } 
+        else { carts = user.cart }
+        res.status(200).render("carts", {carts})
 };
 
 class ViewsRouter extends RouterHelper {
@@ -58,7 +76,9 @@ class ViewsRouter extends RouterHelper {
                 this.render("/details/:pid", ["PUBLIC"], detailsView);
                 this.render("/profile", ["USER", "ADMIN"], profileView);
                 this.render("/update-user", ["USER", "ADMIN"], updateView);
-                this.render("/products/create", ["ADMIN"], newProductView)
+                this.render("/products/create", ["ADMIN"], newProductView);
+                this.render("/products/edit/:pid", ["ADMIN"], editProductView);      
+                this.render("/carts", ["USER", "ADMIN"], userCartsView);
         };
 };
 

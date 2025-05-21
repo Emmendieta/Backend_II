@@ -2,6 +2,7 @@ const btnNewProduct = document.getElementById("btnCreateProduct");
 
 btnNewProduct.addEventListener("click", async () => {
     try {
+        const id = document.getElementById("productId")?.value;
         const image = document.getElementById("newProductUlLiImage").value;
         const title = document.getElementById("newProductUlLihTitle").value;
         let price = document.getElementById("newProductUlLihPrice").value;
@@ -10,11 +11,12 @@ btnNewProduct.addEventListener("click", async () => {
         const category = document.getElementById("newProductUlLihCategory").value;
         let statusProduct = document.getElementById("newProductUlLihStatus").checked;
         const description = document.getElementById("newProductUlLihDescription").value;
-        if (!image || !title || !price || !code || !stock || !category || !statusProduct || !description) {
+        if (!image || !title || !price || !code || !stock || !category || !description) {
             alert("All values are needed!");
         } else {
             price = Number(price);
             stock = Number(stock);
+            if (!document.getElementById("newProductUlLihStatus").checked) { statusProduct = false; }
             if (isNaN(price) || isNaN(stock) || price < 0 || stock < 0) {
                 alert("The prices or the stock has to be a positive number!!!");
             } else {
@@ -28,18 +30,19 @@ btnNewProduct.addEventListener("click", async () => {
                     category: category,
                     image: image
                 };
+                console.log(data)
                 const opts = {
-                    method: "POST",
+                    method: id ? "PUT": "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(data)
                 };
-                const url = "/api/products/";
+                const url = id ? `/api/products/${id}` : "/api/products/";
                 let response = await fetch(url, opts);
                 response = await response.json();
                 if (response.error) {
                     alert(response.error);
                 } else {
-                    alert("Product created!");
+                    alert( id ? "Product Updated!" : "Product created!");
                     location.replace("/");
                 }
             }

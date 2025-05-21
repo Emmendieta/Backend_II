@@ -11,8 +11,8 @@
             <img class="detailsUlLih6" src="{{product.image}}" alt="{{product._id}}">
         </div>
         <div class="detailsUlLiDiv">
-            <h3 class="detailsUlLih3">Code: </h3>
-            <h3 class="detailsUlLih3">{{product._id}}</h3>
+            <h3 class="detailsUlLih3">Id: </h3>
+            <h3 class="detailsUlLih3" id="productId">{{product._id}}</h3>
         </div>
         <div class="detailsUlLiDiv">
             <h3 class="detailsUlLih3">Title: </h3>
@@ -28,7 +28,7 @@
         </div>
         <div class="detailsUlLiDiv">
             <h3 class="detailsUlLih3">Stock: </h5>
-            <h3 class="detailsUlLih3">{{product.stock}}</h3>
+            <h3 class="detailsUlLih3" id="productStock">{{product.stock}}</h3>
         </div>
         <div class="detailsUlLiDiv">
             <h3 class="detailsUlLih3">Category: </h6>
@@ -47,7 +47,9 @@
                 <p class="detailsUlLiDivBottomQuantityP">Quantity: </p>
                 <input type="number" id="detailsUlLiDivBottomQuantityInput">
             </div>
-            <button class="btn btn-outline-success btnAddProductToCart">Add to Cart</button>
+            <button class="btn btn-outline-success" id="btnAddProductToCart">Add to Cart</button>
         </div>
     </section>
 </div>
+
+<script src="/scripts/details.js"></script>
