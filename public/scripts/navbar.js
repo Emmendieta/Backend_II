@@ -52,7 +52,7 @@ let googleAuthInstance;
 function initGoogleClient() {
     gapi.load('auth2', () => {
         googleAuthInstance = gapi.auth2.init({
-            client_id: process.env.GOOGLE_ID  // Reemplaza con tu CLIENT_ID
+            client_id: process.env.GOOGLE_ID
         });
     });
 }

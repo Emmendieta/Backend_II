@@ -1,5 +1,3 @@
-import { usersManager } from "../../data/managers/mongo/manager.mongo.js";
-import { createHash } from "../../helpers/hash.helper.js";
 import passportCB from "../../middlewares/passportCB.mid.js";
 import RouterHelper from "../../helpers/router.helper.js";
 
@@ -11,8 +9,7 @@ const registerCB = async (req, res) => {
 const loginCB = async (req, res) => {
     const { _id } = req.user;
     const opts = { maxAge: 24 * 60 * 60 * 1000 };
-    res.cookie("token", req.user.token, opts).json200(_id, "Logged In Success!!!")
-    res.redirect("/");
+    res.cookie("token", req.user.token, opts).json200(_id, "Logged In Success!!!");
 };
 
 

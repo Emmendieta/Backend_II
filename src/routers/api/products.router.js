@@ -1,6 +1,4 @@
-import { Router } from "express";
 import { productsManager } from "../../data/managers/mongo/manager.mongo.js";
-import passport from "passport";
 import RouterHelper from "../../helpers/router.helper.js";
 
 const createOne = async (req, res) => {
@@ -39,8 +37,6 @@ const destroyById = async (req, res) => {
         if (!response) { res.json404(); }
         res.json200(response);
 };
-
-/* const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden" }; */
 
 class ProductsRotuer extends RouterHelper {
         constructor() {

@@ -1,4 +1,3 @@
-/* En Teoria este es para probar unicamente sessions */
 
 import { Router } from "express";
 

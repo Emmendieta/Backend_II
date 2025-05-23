@@ -8,8 +8,6 @@ import errorHandler from "./src/middlewares/errorHandler.mid.js";
 import indexRouter from "./src/routers/index.router.js";
 import dbConnect from "./src/helpers/dbConnect.helper.js";
 import cookieParser from "cookie-parser";
-import session from "express-session";
-import MongoStore from "connect-mongo";
 
 /* Server Settings*/
 

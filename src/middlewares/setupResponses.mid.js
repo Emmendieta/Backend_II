@@ -1,4 +1,4 @@
-//Define las respuestas estandarizadas:
+//Defino las respuestas estandarizadas:
 
 const setupResponses = (req, res, next) => {
     try {
@@ -13,8 +13,7 @@ const setupResponses = (req, res, next) => {
             404: "Not Found!!!",
             500: "Internal Server Error!!!",
         };
-        //const successResponse = (code, response, message = messages[code]) => res.status(code).json({ method, url, response, message });
-        const successResponse = (code, response, message = messages[code]) => res.status(code).json({ ...data, response, message });
+        const successResponse = (code, response, message = messages[code]) => res.status(code).json({ method, url, response, message });
         const errorResponse = (code, errorMessage = messages[code]) => {
             const error = new Error(errorMessage);
             error.statusCode = code;
