@@ -34,7 +34,9 @@ const updateById = async (req, res) => {
 };
 
 const destroyById = async (req, res) => {
-
+    const { cid } = req.params;
+    const response = await cartsManager.destroyById(cid);
+    res.json200(response);
 };
 
 const productsCart = async (req, res) => {

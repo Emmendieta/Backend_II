@@ -54,9 +54,17 @@ const deleteUser = async (req, res) => {
 const returnCartUser = async (req, res) => {
     const { uid } = req.params;
     const user = await usersManager.readById(uid);
-    const carts = user.cart;
-    const activeCart = carts.find((cart) => !cart.close);
-    return res.json200(activeCart);
+    const carts = (user.cart || []).filter(cid => cid != null).map(cid => cid.toString());
+    let activeCart = [];
+    if (carts.length === 0) { res.json404(); }
+    for (let i = 0; i < carts.length; i++) {
+        const cid = carts[i].toString();
+        let cart = await cartsManager.readById(cid);
+        if (cart.close == false) {
+            activeCart = cart;
+        }
+    }
+    res.json200(activeCart);
 };
 
 const returnAllCartsUser = async (req, res) => {
@@ -71,7 +79,6 @@ const asociateCartToUser = async (req, res) => {
     const { cartId } = req.body;
     const user = await usersManager.readById(uid);
     const carts = user.cart;
-    console.log(user.cart)
     carts.push(cartId);
     const response = await usersManager.updateById(uid, { cart: carts });  
     res.json200(response);
@@ -86,7 +93,7 @@ class UserRouter extends RouterHelper {
         this.read("/:uid", ["USER", "ADMIN"], getUser);
         this.read("/", ["ADMIN"], getAllUsers);
         this.create("/", ["PUBLIC"], createUser);
-        this.update("/", ["USER", "ADMIN"], updateUser);
+        this.update("/:uid", ["USER", "ADMIN"], updateUser);
         this.destroy("/:uid", ["ADMIN"], deleteUser);
         this.read("/:uid/cart", ["USER", "ADMIN"], returnCartUser);
         this.update("/:uid/cart", ["USER", "ADMIN"], asociateCartToUser);
