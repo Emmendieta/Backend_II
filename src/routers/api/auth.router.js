@@ -5,20 +5,21 @@ import RouterHelper from "../../helpers/router.helper.js";
 
 const registerCB = async (req, res) => {
     const { _id } = req.user;
-/*     const {email, password, age} = req.body; */
-/*     console.log(email);
-    if (!email || !password || !age) { res.json401("Invalid Data!"); };
-    const user = await usersManager.readByFilter({ email });
-    if (user) { res.json403("User already exists!"); };
-    req.body.password = createHash(req.body.password);
-    const newUser = await usersManager.createOne(req.body); */
     res.json201(_id, "Registered!");
 };
 
 const loginCB = async (req, res) => {
     const { _id } = req.user;
     const opts = { maxAge: 24 * 60 * 60 * 1000 };
-    res.cookie("token", req.user.token, opts).json200(_id, "Logged In Success!!!");
+    res.cookie("token", req.user.token, opts).json200(_id, "Logged In Success!!!")
+    res.redirect("/");
+};
+
+
+const loginCBGoogle = async (req, res) => {
+    const { _id } = req.user;
+    const opts = { maxAge: 24 * 60 * 60 * 1000 };
+    res.cookie("token", req.user.token, opts).redirect("/");
 };
 
 const signOutCB = async (req, res) => res.clearCookie("token").json200(req.user._id, "Sign out successful!");
@@ -27,12 +28,7 @@ const badAuthCB = (req, res) => res.json401();
 
 const forbiddenCB = (req, res) => res.json403();
 
-//const currentCB = async (req, res) => res.json200(req.user.role, "User is online!!!");
 const currentCB = async (req, res) => res.json200(req.user, "User is online!!!");
-
-
-/* const badOpts = { session: false, failureRedirect: "/api/auth/bad-auth" };
-const forbiddenOpts = { session: false, failureRedirect: "/api/auth/forbidden"} */
 
 class AuthRouter extends RouterHelper {
     constructor() {
@@ -48,9 +44,8 @@ class AuthRouter extends RouterHelper {
         this.read("/bad-auth", ["PUBLIC"], badAuthCB);
         this.read("/forbidden", ["PUBLIC"], forbiddenCB);
         /*Google*/
-        //ESTA LINEA DE ABAJO TIENE QUE SER CON UN POST Y UN BOTON EN REALIDAD:
-        this.read("/google", ["PUBLIC"], passportCB("google", { scope: ["email", "profile"] }));
-        this.read("/google/redirect", ["PUBLIC"], passportCB("google"), loginCB);
+        this.read("/google",["PUBLIC"],passportCB("google", { scope: ["email", "profile"] }));
+        this.read("/google/redirect", ["PUBLIC"], passportCB("google"), loginCBGoogle);
     };
 };
 

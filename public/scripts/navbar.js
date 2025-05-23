@@ -25,6 +25,11 @@ const verifyCurrent = async () => {
         };
         document.getElementById("navBarBtnSignOut").addEventListener("click", async () => {
             try {
+                // Cerrar sesión de Google
+                if (googleAuthInstance && googleAuthInstance.isSignedIn.get()) {
+                    await googleAuthInstance.signOut();  // Cierra la sesión de Google
+                    googleAuthInstance.disconnect();  // Desconecta la cuenta de Google
+                }
                 const options = {
                     method: 'POST',
                     headers: { "Content-Type": "application/json" }
@@ -41,5 +46,15 @@ const verifyCurrent = async () => {
         console.error(error);
     }
 };
+
+let googleAuthInstance;
+
+function initGoogleClient() {
+    gapi.load('auth2', () => {
+        googleAuthInstance = gapi.auth2.init({
+            client_id: process.env.GOOGLE_ID  // Reemplaza con tu CLIENT_ID
+        });
+    });
+}
 
 verifyCurrent();

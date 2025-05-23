@@ -1,9 +1,12 @@
-const errorHandler = (err, req, res, next) => {
-    console.log(err);
-    const error = err.message || "Server Error!";
-    const statusCode = err.statusCode || 500;
-    const { method, originalUrl: url} = req;
-    res.status(statusCode).json({error, method, url}); 
+const errorHandler = (error, req, res, next) => {
+    console.log(error);
+    const message = error.message || "Server Error!";
+    const data = {
+        method: req.method,
+        url: req.originalUrl,
+        error: message
+    }
+    res.status(error.statusCode || 500).json(data); 
 };
 
 export default errorHandler;

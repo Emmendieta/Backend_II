@@ -37,7 +37,7 @@ SERVER.use(morgan("dev"));
 
 /* Sessions Settings */
 
-SERVER.use(
+/* SERVER.use(
     session({
         secret: process.env.SECRET,
         resave: true,
@@ -47,22 +47,10 @@ SERVER.use(
             mongoUrl: process.env.LINK_MONGODB,
         }),
     })
-);
+); */
 
 /* Router Settings */
 
 SERVER.use("/", indexRouter);
-SERVER.use(errorHandler);
 SERVER.use(pathHandler);
-
-
-
-/* Video 01 -- Empieza en FALTA VER CUANDO EMPIEZA */
-
-/* Video 02 -- Empieza en 19:52 */ //Falta lo del navbar que esta al final
-
-/* Video 03 -- Empieza en 18:56 */ //OK!!!!
-
-/* Video 04 - Empieza en 16:48 */  //pero despues de hacerlo continuar en 45:29 HAY QUE CAMBIAR EN TODAS LAS passport por passportCB en todos los lugares que lo uso!
-
-/* Video 05 -- Empieza en 18:30 */
+SERVER.use(errorHandler);
