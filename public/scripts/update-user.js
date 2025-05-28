@@ -1,5 +1,14 @@
 document.getElementById("btnUpdate").addEventListener("click", async () => {
     try {
+        let url = "/api/auth/current";
+        let opts = {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        };
+        const res = await fetch(url, opts);
+        let response = await res.json();
+        response = response.response;
+        const uid = response._id;
         const first_name = document.getElementById("inputFirstNameRegister").value.trim();
         const last_name = document.getElementById("inputLastNameRegister").value.trim();
         const age = document.getElementById("inputAgeRegister").value.trim();
@@ -11,14 +20,12 @@ document.getElementById("btnUpdate").addEventListener("click", async () => {
                 last_name: last_name,
                 age: age
             };
-            const opts = {
+            opts = {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)
             };
-            
-
-            const url = "/api/users";
+            url = `/api/users/${uid}`;
             let response = await fetch(url, opts);
             response = await response.json();
             if (response.error) {

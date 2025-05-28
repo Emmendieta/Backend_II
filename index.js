@@ -52,3 +52,6 @@ SERVER.use(morgan("dev"));
 SERVER.use("/", indexRouter);
 SERVER.use(pathHandler);
 SERVER.use(errorHandler);
+
+
+//Video 06 ---> Inicia en 17:35
