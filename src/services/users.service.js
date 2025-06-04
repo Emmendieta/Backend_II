@@ -1,8 +1,8 @@
-import { usersManager } from "../dao/factory.js";
+import { usersRepository } from "../repositories/repository.js";
 
 class UsersService {
     constructor() {
-        this.manager = usersManager;
+        this.manager = usersRepository;
     }
     createOne = async (data) => await this.manager.createOne(data);
     readAll = async () => await this.manager.readAll();

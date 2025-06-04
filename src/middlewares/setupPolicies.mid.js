@@ -1,4 +1,4 @@
-import { usersManager } from "../dao/mongo/dao.mongo.js";
+import { usersRepository } from "../repositories/repository.js";
 import { verifyToken } from "../helpers/token.helper.js";
 
 const setupPolicies = (policies) => async (req, res, next) => {
@@ -17,7 +17,7 @@ const setupPolicies = (policies) => async (req, res, next) => {
             ADMIN: policies.includes("ADMIN")
         };
         if (!listRoles[role]) { return res.json401(); }
-        const user = await usersManager.readById(user_id);
+        const user = await usersRepository.readById(user_id);
         req.user = user;
         next();
     } catch (error) {

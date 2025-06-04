@@ -1,4 +1,3 @@
-/* VER TODO ESTE SI ESTA OK!!!! */
 import MONGOOSE from "mongoose";
 
 import { Schema, model } from "mongoose";

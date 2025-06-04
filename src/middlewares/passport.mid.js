@@ -1,7 +1,7 @@
 import passport from "passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import { ExtractJwt, Strategy as PassportStrategy } from "passport-jwt";
-import { usersManager } from "../dao/mongo/dao.mongo.js";
+import { usersRepository } from "../repositories/repository.js";
 import { compareHash, createHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
@@ -15,10 +15,10 @@ passport.use(
         async (req, email, password, done) => {
             try {
                 if (!req.body.first_name || !req.body.last_name || !req.body.age) { return done(null, null, { message: "Invalid Data!!", statusCode: 400 }); }
-                let user = await usersManager.readByFilter({ email });
+                let user = await usersRepository.readByFilter({ email });
                 if (user) { return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 }); }
                 req.body.password = createHash(password);
-                user = await usersManager.createOne(req.body);
+                user = await usersRepository.createOne(req.body);
                 done(null, user); //primer parametro es si ocurre un error, el segundo, son los datos del usuario que se guardan en req
             } catch (error) {
                 done(error);
@@ -33,7 +33,7 @@ passport.use(
         { passReqToCallback: true, usernameField: "email" },
         async (req, email, password, done) => {
             try {
-                let user = await usersManager.readByFilter({ email });
+                let user = await usersRepository.readByFilter({ email });
                 if (!user) { return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 }); };
                 const verifyPassword = compareHash(password, user.password);
                 if (!verifyPassword) { return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 }); };
@@ -59,7 +59,7 @@ passport.use(
         async (data, done) => {
             try {
                 const { user_id, email, role } = data;
-                const user = await usersManager.readByFilter({ _id: user_id, email, role });
+                const user = await usersRepository.readByFilter({ _id: user_id, email, role });
                 if (!user) { return done(null, null, { message: "Forbidden!", statusCode: 403 }); }
                 done(null, user);
             } catch (error) {
@@ -78,7 +78,7 @@ passport.use(
         async (data, done) => {
             try {
                 const { user_id, email, role } = data;
-                const user = await usersManager.readByFilter({ _id: user_id, email, role });
+                const user = await usersRepository.readByFilter({ _id: user_id, email, role });
                 if(!user) { return done(null, null, { message: "Forbidden!", statusCode: 403 }); }
                 done(null, user);
             } catch (error) {
@@ -95,7 +95,7 @@ passport.use(
         async (data, done) => {
             try {
                 const { user_id, email, role } = data;
-                const user = await usersManager.readByFilter({ _id: user_id, email, role });
+                const user = await usersRepository.readByFilter({ _id: user_id, email, role });
                 if (!user || user.role !== "ADMIN") { return done(null, null, { message: "Forbidden!", statusCode: 403 }); }
                 done(null, user);
             } catch (error) {
@@ -114,7 +114,7 @@ passport.use(
         async (accessToken, refreshToken, profile, done) => {
             try {
                 const { email, name, picture, id } = profile; //El email cuando viene la auth de un tercero no se suele guardar en la BD
-                let user = await usersManager.readByFilter({ email: id });
+                let user = await usersRepository.readByFilter({ email: id });
                 if (!user) {
                     user = {
                         first_name: name.givenName,
@@ -123,7 +123,7 @@ passport.use(
                         password: createHash(email),
                         age: 21
                     };
-                    user = await usersManager.createOne(user);
+                    user = await usersRepository.createOne(user);
                 };
                 const data = { user_id: user._id, email: user.email, role: user.role };
                 const token = createToken(data);
