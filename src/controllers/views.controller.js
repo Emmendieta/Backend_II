@@ -1,6 +1,6 @@
 import { isValidObjectId } from "mongoose";
-import productsService from "../services/products.service.js";
-import cartsService from "../services/carts.service.js";
+import { productsService, cartsService } from "../services/service.js";
+//import cartsService from "../services/carts.service.js";
 
 class ViewsController {
     constructor() {

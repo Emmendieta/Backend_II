@@ -15,8 +15,12 @@ import argvsHelper from "./src/helpers/argvs.helper.js";
 const SERVER = EXPRESS();
 const PORT = process.env.PORT || 8080;
 const ready = async () => {
-    await dbConnect(process.env.LINK_MONGODB);
-    console.log(`Server ready on port ${PORT} in mode: ${argvsHelper.mode}`);
+    if (process.env.PERSISTENCE === "mongo") {
+        await dbConnect(process.env.LINK_MONGODB);
+        console.log(`Server ready on port ${PORT} in mode: ${argvsHelper.mode}`);
+    }
+    else if (process.env.PERSISTENCE === "fs") { console.log("Métodos pendientes para fs!"); }
+    else { console.log("Métodos pendientes para memory!"); }
 };
 SERVER.listen(PORT, ready);
 
@@ -55,4 +59,4 @@ SERVER.use(pathHandler);
 SERVER.use(errorHandler);
 
 
-//Video 06 ---> Inicia en 17:35 ---> Continuar viendo en 01:18:11
+//Video 070 ---> Inicia en 12:47 ---> Continuar viendo en 

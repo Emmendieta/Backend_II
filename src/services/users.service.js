@@ -1,4 +1,4 @@
-import { usersManager } from "../data/managers/mongo/manager.mongo.js";
+import { usersManager } from "../dao/factory.js";
 
 class UsersService {
     constructor() {

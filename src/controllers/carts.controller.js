@@ -1,5 +1,5 @@
 import { isValidObjectId } from "mongoose";
-import cartsService from "../services/carts.service.js";
+import { cartsService } from "../services/service.js";
 
 class CartsController {
     constructor() {

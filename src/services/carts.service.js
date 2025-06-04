@@ -1,4 +1,4 @@
-import { cartsManager } from "../data/managers/mongo/manager.mongo.js";
+import { cartsManager } from "../dao/factory.js";
 
 class CartsService {
     constructor() {

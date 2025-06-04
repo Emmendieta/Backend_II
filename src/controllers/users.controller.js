@@ -1,6 +1,5 @@
 import { isValidObjectId } from "mongoose";
-import usersService from "../services/users.service.js";
-import cartsService from "../services/carts.service.js";
+import { usersService, cartsService } from "../services/service.js";
 import { createHash } from "../helpers/hash.helper.js";
 
 class UsersController {
@@ -43,7 +42,7 @@ class UsersController {
         if (!data) { res.json400("No data to update"); }
         const verifyUser = await this.uService.readById(_id);
         if (!verifyUser) { res.json404("User not Found!!!"); }
-        const response = await this.uService.updateOneById(_id, data);
+        const response = await this.uService.updateById(_id, data);
         res.json200(response);
     };
 
@@ -88,7 +87,7 @@ class UsersController {
         const user = await this.uService.readById(uid);
         const carts = user.cart;
         carts.push(cartId);
-        const response = await this.uService.updateOneById(uid, { cart: carts });
+        const response = await this.uService.updateById(uid, { cart: carts });
         res.json200(response);
     };
 }

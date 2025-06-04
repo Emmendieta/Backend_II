@@ -1,19 +1,19 @@
-import { cartsManager, productsManager, usersManager } from "../data/managers/mongo/manager.mongo.js";
+import { cartsRepository, productsRepository, usersRepository } from "../repositories/repository.js";
 
 class Service {
-    constructor(manager) {
-        this.manager = manager;
+    constructor(repository) {
+        this.repository = repository;
     }
-    createOne = async (data) => await this.manager.createOne(data);
-    readAll = async () => await this.manager.readAll();
-    readById = async (pid) => await this.manager.readById(pid);
-    readByFilter = async (filter) => await this.manager.readByFilter(filter);
-    updateOneById = async (pid, data) => await this.manager.updateById(pid, data);
-    destroyById = async (pid) => await this.manager.destroyById(pid);
+    createOne = async (data) => await this.repository.createOne(data);
+    readAll = async () => await this.repository.readAll();
+    readById = async (pid) => await this.repository.readById(pid);
+    readByFilter = async (filter) => await this.repository.readByFilter(filter);
+    updateById = async (pid, data) => await this.repository.updateById(pid, data);
+    destroyById = async (pid) => await this.repository.destroyById(pid);
 }
 
-const cartsService = new Service(cartsManager);
-const productsService = new Service(productsManager);
-const usersService = new Service(usersManager);
+const cartsService = new Service(cartsRepository);
+const productsService = new Service(productsRepository);
+const usersService = new Service(usersRepository);
 
 export { cartsService, productsService, usersService };

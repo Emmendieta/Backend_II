@@ -1,4 +1,4 @@
-import productsService from "../services/products.service.js";
+import { productsService } from "../services/service.js";
 
 class ProductsController {
     constructor() {
@@ -27,7 +27,7 @@ class ProductsController {
     updateById = async (req, res) => {
         const { pid } = req.params;
         const data = req.body;
-        const response = await this.service.updateOneById(pid, data);
+        const response = await this.service.updateById(pid, data);
         if (!response) { res.json404(); }
         res.json200(response);
     };

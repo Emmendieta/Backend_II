@@ -1,4 +1,4 @@
-import { usersManager } from "../data/managers/mongo/manager.mongo.js";
+import { usersManager } from "../dao/mongo/dao.mongo.js";
 import { verifyToken } from "../helpers/token.helper.js";
 
 const setupPolicies = (policies) => async (req, res, next) => {
