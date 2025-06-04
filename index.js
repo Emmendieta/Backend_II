@@ -1,5 +1,5 @@
 import EXPRESS from "express";
-import "dotenv/config.js";
+import "./src/helpers/env.helper.js";
 import { engine } from "express-handlebars";
 import __dirname from "./utils.js";
 import morgan from "morgan";
@@ -8,6 +8,7 @@ import errorHandler from "./src/middlewares/errorHandler.mid.js";
 import indexRouter from "./src/routers/index.router.js";
 import dbConnect from "./src/helpers/dbConnect.helper.js";
 import cookieParser from "cookie-parser";
+import argvsHelper from "./src/helpers/argvs.helper.js";
 
 /* Server Settings*/
 
@@ -15,7 +16,7 @@ const SERVER = EXPRESS();
 const PORT = process.env.PORT || 8080;
 const ready = async () => {
     await dbConnect(process.env.LINK_MONGODB);
-    console.log(`Server ready on port ${PORT}`);
+    console.log(`Server ready on port ${PORT} in mode: ${argvsHelper.mode}`);
 };
 SERVER.listen(PORT, ready);
 
@@ -54,4 +55,4 @@ SERVER.use(pathHandler);
 SERVER.use(errorHandler);
 
 
-//Video 06 ---> Inicia en 17:35
+//Video 06 ---> Inicia en 17:35 ---> Continuar viendo en 01:18:11

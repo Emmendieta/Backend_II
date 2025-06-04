@@ -4,9 +4,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./index.js ",
-    "dev": "node --watch ./index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node ./index.js --mode prod",
+    "dev": "node --watch ./index.js --mode dev",
+    "test": "node --watch ./index.js --mode test",
+    "qa": "node --watch ./index.js --mode qa"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,7 @@
   "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "commander": "^14.0.0",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
