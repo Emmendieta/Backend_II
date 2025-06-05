@@ -1,6 +1,7 @@
 import { isValidObjectId } from "mongoose";
 import { usersService, cartsService } from "../services/service.js";
 import { createHash } from "../helpers/hash.helper.js";
+import { sendEmailHelper } from "../helpers/email.helper.js";
 
 class UsersController {
     constructor() {
@@ -90,6 +91,13 @@ class UsersController {
         const response = await this.uService.updateById(uid, { cart: carts });
         res.json200(response);
     };
+
+    sendEmailUser = async (req, res) => {
+        const { email } = req.params;
+        if(!email) { res.json400("Invalid Email!"); }
+        await sendEmailHelper(email);
+        res.json200("Email was send!");
+    }
 }
 
 const usersController = new UsersController();

@@ -12,7 +12,7 @@ class Repository {
     readAll = async () => await this.manager.readAll();
     readById = async (pid) => await this.manager.readById(pid);
     readByFilter = async (filter) => await this.manager.readByFilter(filter);
-    updateById = async (pid, data) => await this.manager.updateById(pid, new this.Dto(data));
+    updateById = async (pid, data) => await this.manager.updateById(pid, data);
     destroyById = async (pid) => await this.manager.destroyById(pid);
 }
 

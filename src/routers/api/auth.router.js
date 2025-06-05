@@ -18,6 +18,8 @@ class AuthRouter extends RouterHelper {
         /*Google*/
         this.read("/google",["PUBLIC"],passportCB("google", { scope: ["email", "profile"] }));
         this.read("/google/redirect", ["PUBLIC"], passportCB("google"), authController.loginCBGoogle);
+        /*Email*/
+        this.read("/verify/:email/:verifyCode", ["PUBLIC"], authController.verifyUserCB);
     };
 };
 

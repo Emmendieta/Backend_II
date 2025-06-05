@@ -5,8 +5,11 @@ import { usersRepository } from "../repositories/repository.js";
 import { compareHash, createHash } from "../helpers/hash.helper.js";
 import { createToken } from "../helpers/token.helper.js";
 import { Strategy as GoogleStrategy } from "passport-google-oauth2";
+import verifyEmail from "../helpers/verifyEmail.helper.js";
 
-const GOOGLE_URL = "http://localhost:8080/api/auth/google/redirect";
+const { PORT } = process.env;
+
+const GOOGLE_URL = `http://localhost:${PORT}/api/auth/google/redirect`;
 
 passport.use(
     "register",
@@ -19,6 +22,7 @@ passport.use(
                 if (user) { return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 }); }
                 req.body.password = createHash(password);
                 user = await usersRepository.createOne(req.body);
+                await verifyEmail(user.email, user.verifyCode);
                 done(null, user); //primer parametro es si ocurre un error, el segundo, son los datos del usuario que se guardan en req
             } catch (error) {
                 done(error);

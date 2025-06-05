@@ -1,3 +1,5 @@
+import { usersService } from "../services/service.js";
+
 class AuthController {
     registerCB = async (req, res) => {
         const { _id } = req.user;
@@ -23,6 +25,16 @@ class AuthController {
     forbiddenCB = (req, res) => res.json403();
 
     currentCB = async (req, res) => res.json200(req.user, "User is online!!!");
+
+    /*Email*/
+
+    verifyUserCB = async (req, res) => {
+        const { email, verifyCode } = req.params;
+        let user = await usersService.readByFilter({ email, verifyCode });
+        if(!user) { return res.json404() };
+        user = await usersService.updateById(user._id, { isVerified: true });
+        res.json200(user, `Email: ${user.email} has been verified!`);
+    };
 }
 
 const authController = new AuthController();

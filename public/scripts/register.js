@@ -1,12 +1,12 @@
 document.getElementById("btnRegister").addEventListener("click", async () => {
     try {
-            const first_name= document.getElementById("inputFirstNameRegister").value;
-            const last_name= document.getElementById("inputLastNameRegister").value;
-            let age= document.getElementById("inputAgeRegister").value;
-            const email= document.getElementById("inputEmailRegister").value;
-            const password= document.getElementById("inputPasswordRegister").value;
-            age = Number(age);
-            const data = {
+        const first_name = document.getElementById("inputFirstNameRegister").value;
+        const last_name = document.getElementById("inputLastNameRegister").value;
+        let age = document.getElementById("inputAgeRegister").value;
+        const email = document.getElementById("inputEmailRegister").value;
+        const password = document.getElementById("inputPasswordRegister").value;
+        age = Number(age);
+        const data = {
             first_name: first_name,
             last_name: last_name,
             age: age,
@@ -25,7 +25,8 @@ document.getElementById("btnRegister").addEventListener("click", async () => {
             alert(response.error);
         } else {
             alert("Registered Success!");
-            location.replace("/login");
+            alert("Please Verify your email to get the Code!");
+            location.replace(`/verify/${email}`);
         }
     } catch (error) {
         console.log(error.message);

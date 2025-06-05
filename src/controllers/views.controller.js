@@ -68,6 +68,18 @@ class ViewsController {
         else { carts = user.cart }
         res.status(200).render("carts", { carts })
     };
+
+    /* Email */
+
+    verifyView = async (req, res) => {
+        const { email } = req.params;
+        res.status(200).render("verifyEmail", { email });
+    };
+
+    resetView = async (req, res) => {
+        const { email } = req.params;
+        res.status(200).render("resetEmail", { email });
+    };
 }
 
 const viewsController = new ViewsController();

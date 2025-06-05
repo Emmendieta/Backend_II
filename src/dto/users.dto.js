@@ -14,7 +14,9 @@ class UsersDTO {
         this.cart = data.cart || [];
         this.password = data.password;
         this.role = data.role || "USER";
+        this.verifyCode = data.verifyCode || crypto.randomBytes(12).toString("hex");
         if (PERSISTENCE !== "mongo") {
+            this.isVerified = data.isVerified || false;
             this.createdAt = new Date();
             this.updateAt = new Date();
             this.password = createHash(data.password);

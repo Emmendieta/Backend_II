@@ -15,6 +15,8 @@ class UserRouter extends RouterHelper {
         this.read("/:uid/cart", ["USER", "ADMIN"], usersController.returnCartUser);
         this.update("/:uid/cart", ["USER", "ADMIN"], usersController.asociateCartToUser);
         this.read("/:uid/carts", ["USER", "ADMIN"], usersController.returnAllCartsUser);
+        /*Email*/
+        this.read("/email/:email", ["PUBLIC"], usersController.sendEmailUser);
     };
 }
 
