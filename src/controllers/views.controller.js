@@ -78,7 +78,7 @@ class ViewsController {
 
     resetView = async (req, res) => {
         const { email } = req.params;
-        res.status(200).render("resetEmail", { email });
+        res.status(200).render("resetPassword", { email });
     };
 }
 

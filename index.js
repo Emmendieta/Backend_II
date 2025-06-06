@@ -60,4 +60,4 @@ SERVER.use(errorHandler);
 
 
 //Video 07 ---> Inicia en 12:47 ---> Continuar viendo en 01:30:25 (Parece que no se necesita porque es react y conexion entre front y back con cors)
-//Video 08 ---> Inicia en 0:00 ---> Continuar viendo en 0:00:00
+//Video 08 ---> Inicia en 0:00 ---> Continuar viendo en 0:49:26 (puede ser que estes adelanto)

@@ -41,6 +41,8 @@ passport.use(
                 if (!user) { return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 }); };
                 const verifyPassword = compareHash(password, user.password);
                 if (!verifyPassword) { return done(null, null, { message: "Ivalid Credentials!", statusCode: 401 }); };
+                //Ahora verifico si esta validado el usuario:
+                if (!user.isVerified) { return done (null, null, {message: "First you have to verify the Code that was sent to your emial!", statusCode: 401 }); };
                 //Ahora creo el token:
                 const data = { user_id: user._id, email: user.email, role: user.role };
                 const token = createToken(data);
