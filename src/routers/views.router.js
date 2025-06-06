@@ -18,7 +18,7 @@ class ViewsRouter extends RouterHelper {
                 this.render("/carts", ["USER", "ADMIN"], viewsController.userCartsView);
                 //Email:
                 this.render("/verify/:email", ["PUBLIC"], viewsController.verifyView);
-                this.render("/reset/:email", ["PUBLIC"], viewsController.resetView);
+                this.render("/reset/:email/:token", ["PUBLIC"], viewsController.resetView);
         };
 };
 

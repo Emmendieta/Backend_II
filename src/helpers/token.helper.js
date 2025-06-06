@@ -21,4 +21,13 @@ const verifyToken = (token) => {
     }
 };
 
-export { createToken, verifyToken };
+const tokenPassword = (data) => {
+    try {
+        const token = jwt.sign(data, process.env.SECRET, { expiresIn: 900 }); //900 son 15 minutos
+        return token;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export { createToken, verifyToken, tokenPassword };

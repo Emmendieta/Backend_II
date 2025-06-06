@@ -7,24 +7,27 @@
         <h2 id="profileDivH2Title">Profile</h2>
     </section>
     <section id="profileDivDivSectMiddle">
-                <div class="profileDivDiv">
-                    <h3 class="profileDivh3">First Name: </h3>
-                    <h3 class="profileDivh3">{{user.first_name}}</h3>
-                </div>
-                <div class="profileDivDiv">
-                    <h3 class="profileDivh3">Last Name: </h3>
-                    <h3 class="profileDivh3">{{user.last_name}}</h3>
-                </div>
-                <div class="profileDivDiv">
-                    <h4 class="profileDivh4">Age:</h4>
-                    <h4 class="profileDivh4">{{user.age}}</h4>
-                </div>
-                <div class="profileDivDiv">
-                    <h4 class="profileDivh4">Email: </h4>
-                    <h4 class="profileDivh4">{{user.email}}</h4>
-                </div>
-                <div class="profileDivDivBottom">
-                    <a class="btn btn-outline-success" id="btnUpdateUserData" href="/update-user">Update data</a>
-                </div>
+        <div class="profileDivDiv">
+            <h3 class="profileDivh3">First Name: </h3>
+            <h3 class="profileDivh3">{{user.first_name}}</h3>
+        </div>
+        <div class="profileDivDiv">
+            <h3 class="profileDivh3">Last Name: </h3>
+            <h3 class="profileDivh3">{{user.last_name}}</h3>
+        </div>
+        <div class="profileDivDiv">
+            <h4 class="profileDivh4">Age:</h4>
+            <h4 class="profileDivh4">{{user.age}}</h4>
+        </div>
+        <div class="profileDivDiv">
+            <h4 class="profileDivh4">Email: </h4>
+            <h4 class="profileDivh4" id="userEmail">{{user.email}}</h4>
+        </div>
+        <div class="profileDivDivBottom">
+            <a class="btn btn-outline-success" type="submit" id="btnResetPassword">Reset Password</a>
+            <a class="btn btn-outline-success" id="btnUpdateUserData" href="/update-user">Update data</a>
+        </div>
     </section>
 </div>
+
+<script src="/scripts/profile.js"></script>

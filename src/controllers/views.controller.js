@@ -1,6 +1,6 @@
 import { isValidObjectId } from "mongoose";
 import { productsService, cartsService } from "../services/service.js";
-//import cartsService from "../services/carts.service.js";
+import { verifyToken } from "../helpers/token.helper.js";
 
 class ViewsController {
     constructor() {
@@ -77,12 +77,16 @@ class ViewsController {
     };
 
     resetView = async (req, res) => {
-        const { email } = req.params;
-        res.status(200).render("resetPassword", { email });
+        const { email, token } = req.params;
+        let decoded;
+        try {
+            decoded = verifyToken(token); // Puede lanzar error si está vencido o es inválido
+        } catch (error) { return res.json404("The Token has expired!").render("error"); }
+        if (decoded.email !== email) { return ("Verify Data!").render("error"); }
+        res.status(200).render("resetPassword", { email, token });
     };
 }
 
 const viewsController = new ViewsController();
-
 
 export default viewsController;

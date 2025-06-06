@@ -2,6 +2,8 @@ import { isValidObjectId } from "mongoose";
 import { usersService, cartsService } from "../services/service.js";
 import { createHash } from "../helpers/hash.helper.js";
 import { sendEmailHelper } from "../helpers/email.helper.js";
+import { verifyToken } from "../helpers/token.helper.js";
+import resetPasswordHelper from "../helpers/resetPassword.helper.js";
 
 class UsersController {
     constructor() {
@@ -60,7 +62,7 @@ class UsersController {
         const { uid } = req.params;
         if (!isValidObjectId(uid)) { res.json400("Invalid user ID!"); }
         const user = await this.uService.readById(uid);
-        if(!user) { res.json400("User not Found!"); }
+        if (!user) { res.json400("User not Found!"); }
         const carts = (user.cart || []).filter(cid => cid != null).map(cid => cid.toString());
         if (carts.length === 0) { res.json404(); }
         let activeCart = [];
@@ -94,10 +96,32 @@ class UsersController {
 
     sendEmailUser = async (req, res) => {
         const { email } = req.params;
-        if(!email) { res.json400("Invalid Email!"); }
+        if (!email) { res.json400("Invalid Email!"); }
         await sendEmailHelper(email);
         res.json200("Email was send!");
-    }
+    };
+
+    sendEmailPassword = async (req, res) => {
+        const { email } = req.params;
+        if (!email) { return res.json400("Invalid Email!"); }
+        await resetPasswordHelper(email);
+        res.json200("Email was send!");
+    };
+
+    updateUserPassword = async (req, res) => {
+        const { email, token } = req.params;
+        const { password } = req.body;
+        if (!email || !token) { return res.json400("Verify data!"); }
+        //Comparo el token:
+        let verify = verifyToken(token);
+        if (!verify) { return res.json404("Invalid Token!"); }
+        let user = await this.uService.readByFilter({ email });
+        if (!user) { return res.json400(); }
+        const newPassword = createHash(password);
+        if (user.password === newPassword) { return json401("The new password is the same that the old one!"); }
+        await this.uService.updateById(user._id, { password: newPassword });
+        res.json200("Password update!");
+    };
 }
 
 const usersController = new UsersController();
