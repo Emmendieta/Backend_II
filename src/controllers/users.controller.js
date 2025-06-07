@@ -1,6 +1,6 @@
 import { isValidObjectId } from "mongoose";
 import { usersService, cartsService } from "../services/service.js";
-import { createHash } from "../helpers/hash.helper.js";
+import { compareHash, createHash } from "../helpers/hash.helper.js";
 import { sendEmailHelper } from "../helpers/email.helper.js";
 import { verifyToken } from "../helpers/token.helper.js";
 import resetPasswordHelper from "../helpers/resetPassword.helper.js";
@@ -31,6 +31,14 @@ class UsersController {
         if (!response) { res.json404("User not found!"); }
         res.json200(response);
     };
+
+    getUserByFilter = async (req, res) => {
+        const { email } = req.params;
+        if (!email) { return res.json404("Error get the email!"); }
+        const response = await this.uService.readByFilter({ email });
+        if (!response) { return res.json404("User not found!"); }
+        res.json200(response);
+    }
 
     getAllUsers = async (req, res) => {
         const response = await this.uService.readAll();
@@ -118,7 +126,8 @@ class UsersController {
         let user = await this.uService.readByFilter({ email });
         if (!user) { return res.json400(); }
         const newPassword = createHash(password);
-        if (user.password === newPassword) { return json401("The new password is the same that the old one!"); }
+        const checkPass = compareHash (newPassword, user.password);
+        if (checkPass) { return json401("The new password is the same that the old one!"); }
         await this.uService.updateById(user._id, { password: newPassword });
         res.json200("Password update!");
     };
