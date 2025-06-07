@@ -2,7 +2,7 @@ const { PERSISTENCE } = process.env;
 import crypto from "crypto";
 
 class CartsDTO {
-    constructor(data) {
+    constructor(data = {}) {
         if (PERSISTENCE !== "mongo") {
             this._id = crypto.randomBytes(12).toString("hex");
         }

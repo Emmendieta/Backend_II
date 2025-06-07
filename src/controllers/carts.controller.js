@@ -1,9 +1,10 @@
 import { isValidObjectId } from "mongoose";
-import { cartsService } from "../services/service.js";
+import { cartsService, productsService } from "../services/service.js";
 
 class CartsController {
     constructor() {
         this.service = cartsService;   
+        this.pService = productsService;
     };
 
     createOne = async (req, res) => {
@@ -49,6 +50,28 @@ class CartsController {
         const products = response.products;
         res.json200(products);
     };
+
+    finalizeCart = async (req, res) => {
+    const { cid } = req.params;
+    if (!isValidObjectId(cid)) return res.json400("Invalid cart ID!");
+    const cart = await this.service.readById(cid);
+    if (!cart) { return res.json404("Cart not found"); }
+    const updatedProducts = [];
+    const stockUpdates = [];
+    //Valido el stock:
+    for (const item of cart.products) {
+        const product = await this.pService.readById(item.product);
+        if (!product) return res.json404(`Product ${item.product} not found`);
+        const newStock = product.stock - item.quantity;
+        if (newStock < 0) { return res.json400(`Not enough stock for product: ${product.title}`); }
+        stockUpdates.push({ pid: product._id, newStock });
+    }
+    //Actualizo el stock de productos:
+    for (const { pid, newStock } of stockUpdates) { await this.pService.updateById(pid, { stock: newStock }); }
+    //Cierro el carrito:
+    const updatedCart = await this.service.updateById(cid, { close: true });
+    res.json200({ message: "Cart finalized and stock updated", cart: updatedCart });
+}
 }
 
 const cartsController = new CartsController();

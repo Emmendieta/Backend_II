@@ -10,7 +10,7 @@ class ProductsRotuer extends RouterHelper {
                 this.create("/", ["ADMIN"], productsController.createOne);
                 this.read("/", ["PUBLIC"], productsController.readAll);
                 this.read("/:pid", ["PUBLIC"], productsController.readById);
-                this.update("/:pid", ["USER", "ADMIN"], productsController.updateById);
+                this.update("/:pid", ["ADMIN"], productsController.updateById);
                 this.destroy("/:pid", ["ADMIN"], productsController.destroyById);
         }
 };

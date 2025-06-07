@@ -13,6 +13,7 @@ class CartRouter extends RouterHelper {
         this.update("/:cid", ["USER", "ADMIN"], cartsController.updateById);
         this.destroy("/:cid", ["USER", "ADMIN"], cartsController.destroyById);
         this.read("/:cid/products", ["USER", "ADMIN"], cartsController.productsCart);   
+        this.update("/finalize/:cid", ["USER", "ADMIN"], cartsController.finalizeCart);
     };
 }
 
