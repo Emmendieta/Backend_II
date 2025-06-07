@@ -1,5 +1,4 @@
 import MONGOOSE from "mongoose";
-
 import { Schema, model } from "mongoose";
 
 const collection = "carts";
