@@ -1,4 +1,7 @@
 import { createTransport } from "nodemailer";
+import hbs from "nodemailer-express-handlebars";
+import { join } from "path";
+import __dirname from "../../utils.js";
 
 const transport = createTransport({
     host: "smtp.gmail.com",
@@ -10,15 +13,35 @@ const transport = createTransport({
     }
 });
 
+//Configuración de Handlebars como motor de plantillas:
+const handlebarsOpts = {
+    viewEngine: {
+        extName: ".handlebars",
+        partialsDir: join(__dirname, "/src/views"),
+        defaultLayout: false
+    },
+    viewPath: join(__dirname, "/src/views"),
+    extName: ".handlebars"
+};
+
+transport.use("compile", hbs(handlebarsOpts));
+
 //Función de utilidad que va a enviar el correo electronico:
 
 const sendEmailHelper = async (email) => {
     try {
-        await transport.sendMail( {
+        await transport.sendMail({
             from: process.env.GOOGLE_EMAIL,
             to: email,
-            subject: "MAIL DE PRUEBA",
-            html: "<h1> Correo de prueba con Nodemailer </h1>" //Aca poder meter el script con el formato que queres mas estructurado
+            subject: "Test Email",
+            template: "testEmail", //Nombre del archivo handlebars
+            attachments: [
+                {
+                    filename: "verifyImg.jpg",
+                    path: join(__dirname, "/public/assets/verifyImg.jpg"),
+                    cid: "verifyImg" //Este valor tiene que conicidir con el cid que esta en la imagen del handlebars
+                }
+            ]
         });
     } catch (error) {
         throw error;
